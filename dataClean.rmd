@@ -1,0 +1,30 @@
+#Alex Engel
+## 5/21/2020
+
+# Cleaning up the Data
+
+Import the data
+```{r}
+library (tidyverse)
+library(readxl)
+stringsAsFactors = TRUE
+
+data <- read_excel("C:/Users/alex.engel/Documents/GitHub/templogger/templogger2020.xlsx")
+
+BordeauxCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Bordeaux_Crk_Summary.csv", col_names = TRUE, na = "NA")
+
+BordeauxWMA <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Bordeaux_WMA.csv", col_names = TRUE, na = "NA")
+
+head(BordeauxWMA)
+
+ChadronCreek <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Chadron_Creek_Park_Exit.csv", col_names = TRUE, na = "NA")
+
+head(ChadronCreek)
+
+ChradronCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Chadron_Crkexit_Summary.csv", col_names = TRUE, na = "NA")
+
+EastAshCreek <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/EAsh_CrkUSFS_Summary.csv", col_names = TRUE, na = "NA")
+
+EastAshCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/East_Ash_Creek_USFS.csv", col_names = TRUE, na = "NA")
+```
+
