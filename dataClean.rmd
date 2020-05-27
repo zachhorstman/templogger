@@ -3,28 +3,142 @@
 
 # Cleaning up the Data
 
-Import the data
-```{r}
+First, we need to import the data. We have an xcell file ~`templogger2020` that is a collection of all data from 2015-2020 (ish), consisting of *min*, *mean*, and *max*. Each sheet must be brought in seperately, and there are plenty of errors per sheet. This data can't really be used as is and needs a lot of cleaning.
+
+
+```{r, temploggerXL}
 library (tidyverse)
 library(readxl)
+
 stringsAsFactors = TRUE
 
-data <- read_excel("C:/Users/alex.engel/Documents/GitHub/templogger/templogger2020.xlsx")
+Data2015 <- read_excel("C:/Users/alex.engel/Documents/GitHub/templogger/templogger2020.xlsx", sheet = 1)
 
-BordeauxCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Bordeaux_Crk_Summary.csv", col_names = TRUE, na = "NA")
+Data2016 <- read_excel("C:/Users/alex.engel/Documents/GitHub/templogger/templogger2020.xlsx", sheet = 2)
 
-BordeauxWMA <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Bordeaux_WMA.csv", col_names = TRUE, na = "NA")
+Data2017 <- read_excel("C:/Users/alex.engel/Documents/GitHub/templogger/templogger2020.xlsx", sheet = 3)
+
+Data2018 <- read_excel("C:/Users/alex.engel/Documents/GitHub/templogger/templogger2020.xlsx", sheet = 4)
+
+Data2019 <- read_excel("C:/Users/alex.engel/Documents/GitHub/templogger/templogger2020.xlsx", sheet = 5)
+
+Data2020 <- read_excel("C:/Users/alex.engel/Documents/GitHub/templogger/templogger2020.xlsx", sheet = 6)
+
+Locations <- read_excel("C:/Users/alex.engel/Documents/GitHub/templogger/templogger2020.xlsx", sheet = 7)
+
+```
+
+
+#Raw Data
+
+```{r, rawLogs}
+library(tidyverse)
+
+BordeauxWMA <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/rawBordeaux.csv", col_names = TRUE, na = "NA")
+
+BordeauxWMA %>% 
+  rename("Number" = "ID",
+         "Datetime" = "Date Time",
+         "Temp" = "Temp_Farenheight") -> BordeauxWMA
+
+BordeauxWMA %>% 
+  mutate(Location = "Bordeaux WMA") -> BordeauxWMA
 
 head(BordeauxWMA)
 
 ChadronCreek <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Chadron_Creek_Park_Exit.csv", col_names = TRUE, na = "NA")
 
+ChadronCreek %>% 
+  mutate(Location = "Chadron Creek (Park Exit)") -> ChadronCreek
+
 head(ChadronCreek)
+
+
+EastAshCreek <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/East_Ash_Creek_USFS.csv", col_names = TRUE, na = "NA")
+
+head(EastAshCreek)
+
+EastAshCreek %>% 
+  mutate(Location = "East Ash Creek") -> EastAshCreek
+
+head(EastAshCreek)
+
+rbind(BordeauxWMA, ChadronCreek, EastAshCreek) -> rawData
+
+```
+
+## Cleaning the raw data
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(lubridate)
+
+rawData %>% 
+  separate(Datetime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Date = lubridate::mdy(Date)) -> rawData
+
+rawData %>% 
+  mutate(Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (Temp - 32 *(5/9))) -> rawData
+
+rawData %>% 
+  rename(TempF = Temp) -> rawData
+
+head(rawData)
+
+write_csv(rawData, "C:/Users/alex.engel/Documents/GitHub/templogger/rawData.csv")
+```
+
+##Plot
+
+```{r, quckPlot}
+library(ggplot2)
+
+rawData %>% 
+  filter(Location == "Bordeaux WMA") %>% 
+ggplot() +
+  geom_line(aes(x = Date, y = TempF, colour = Location)) +
+  theme_classic()
+
+rawData %>% 
+  filter(Location == "Chadron Creek (Park Exit)") %>% 
+ggplot() +
+  geom_line(aes(x = Date, y = TempF), colour = "dodgerblue") +
+  theme_classic()
+
+rawData %>% 
+  filter(Location == "East Ash Creek") %>% 
+ggplot() +
+  geom_line(aes(x = Date, y = TempF), colour = "forestgreen") +
+  theme_classic()
+
+ggplot(data = rawData) +
+  geom_line(aes(x = Date, y = TempF, colour = Location), alpha = 0.75) +
+  theme_classic()
+```
+
+
+#Summary Data
+
+```{r}
+library(tidyverse)
+library(readr)
+
+### Bordeaux ###
+BordeauxCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Bordeaux_Crk_Summary.csv", col_names = TRUE, na = "NA")
+
+BordeauxWMA <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Bordeaux_WMA.csv", col_names = TRUE, na = "NA")
+
+### Chadron Creek ###
 
 ChradronCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Chadron_Crkexit_Summary.csv", col_names = TRUE, na = "NA")
 
-EastAshCreek <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/EAsh_CrkUSFS_Summary.csv", col_names = TRUE, na = "NA")
+### Ash Creek ###
 
-EastAshCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/East_Ash_Creek_USFS.csv", col_names = TRUE, na = "NA")
+EastAshCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/EAsh_CrkUSFS_Summary.csv", col_names = TRUE, na = "NA")
+
 ```
 
