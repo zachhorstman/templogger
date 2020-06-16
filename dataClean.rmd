@@ -1,9 +1,257 @@
 #Alex Engel
-## 5/21/2020
 
 # Cleaning up the Data
 
 First, we need to import the data. We have an xcell file ~`templogger2020` that is a collection of all data from 2015-2020 (ish), consisting of *min*, *mean*, and *max*. Each sheet must be brought in seperately, and there are plenty of errors per sheet. This data can't really be used as is and needs a lot of cleaning.
+
+
+#Master Data CSV
+
+##6/16/2020
+
+### Alliance Drain 1
+
+```{r}
+library(tidyverse)
+
+AllianceDrain2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/AllianceDrainSite1_2015.csv", col_names = TRUE, na = "NA")
+
+AllianceDrain2016 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/AllianceDrainSite1_2016.csv", col_names = TRUE, na = "NA")
+
+rbind(AllianceDrain2015, AllianceDrain2016) -> AllianceMasterData
+
+AllianceMasterData %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "Alliance Drain",
+         Site = "Site 1",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "Niobrara",
+         Water = "Coolwater",
+         Lat = "42.56561",
+         Long = "-100.121") %>% 
+  select(-ID) %>% 
+  select(-Location) -> AllianceMasterData
+
+AllianceMasterData %>% 
+  mutate(Deployment = "Seasonal") -> AllianceMasterData
+
+```
+
+
+#Bone Creek
+
+##6/16/2020
+
+### Site 1
+
+```{r}
+BoneCreekSite1_2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/BoneCreekSite1_2015.csv", col_names = TRUE, na = "NA")
+
+BoneCreekSite1_2015 %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "Bone Creek",
+         Site = "Site 1 Grewcock",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "Niobrara",
+         Water = "Warmwater",
+         Lat = "42.68207",
+         Long = "-99.69564") %>% 
+  select(-ID) %>% 
+  select(-Location) -> BoneCreekSite1_2015
+
+BoneCreekSite1_2015 %>% 
+  mutate(Deployment = "Seasonal") -> BoneCreek1
+
+BoneCreekSite2_2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/BoneCreekSite2_2015.csv", col_names = TRUE, na = "NA")
+
+BoneCreekSite2_2015 %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "Bone Creek",
+         Site = "Site 2 Keller Park SRA",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "Niobrara",
+         Water = "Warmwater",
+         Lat = "42.67097",
+         Long = "-99.76698") %>% 
+  select(-ID) %>% 
+  select(-Location) -> BoneCreekSite2_2015
+
+BoneCreekSite2_2015 %>% 
+  mutate(Deployment = "Seasonal") -> BoneCreek2
+
+BoneCreekSite3_2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/BoneCreekSite3_2015.csv", col_names = TRUE, na = "NA")
+
+BoneCreekSite3_2015 %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "Bone Creek",
+         Site = "Site 3 Keller WMA",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "Niobrara",
+         Water = "Warmwater",
+         Lat = "42.6656",
+         Long = "-99.77757") %>% 
+  select(-ID) %>% 
+  select(-Location) -> BoneCreekSite3_2015
+
+BoneCreekSite3_2015 %>% 
+  mutate(Deployment = "Seasonal") -> BoneCreek3
+
+#Read in bone creek #4
+BoneCreekSite4_2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/BoneCreekSite4_2015.csv", col_names = TRUE, na = "NA")
+
+BoneCreekSite4_2016 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/BoneCreekSite4_2016.csv", col_names = TRUE, na = "NA")
+
+rbind(BoneCreekSite4_2015, BoneCreekSite4_2016) -> BoneCreek4
+
+BoneCreek4 %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "Bone Creek",
+         Site = "Site 4 Sisson",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "Niobrara",
+         Water = "Warmwater",
+         Lat = "42.59239",
+         Long = "-99.81621") %>% 
+  select(-ID) %>% 
+  select(-Location) -> BoneCreek4
+
+BoneCreek4 %>% 
+  mutate(Deployment = "Seasonal") -> BoneCreek4
+
+rbind(BoneCreek1, BoneCreek2, BoneCreek3, BoneCreek4) -> BoneCreekMasterData
+
+```
+
+
+#Bordeaux Data
+
+##6/16/2020
+
+###Bordeaux Cliffs 
+
+```{r}
+BordCreekCliffs_2016 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/BordeauxCreekCliffs_2016.csv", col_names = TRUE, na = "NA")
+
+BordCreekCliffs_2016 %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "Bone Creek",
+         Site = "Site 4 Sisson",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "White-Hat",
+         Water = "Warmwater",
+         Lat = "42.71766",
+         Long = "-102.9306",
+         Deployment = "Year-round") %>% 
+  select(-ID) %>% 
+  select(-Location) -> BordCreekCliffsMasterData
+
+```
+
+### Bordeaux North
+
+```{r}
+library(tidyverse)
+
+BordCreek2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/BordeauxCreekNorth_2015.csv", col_names = TRUE, na = "NA")
+
+BordCreek2016_1 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/BordeauxCreekNorth_2016.csv", col_names = TRUE, na = "NA")
+
+BordCreek2016_2 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/BordeauxCreekNorth_2016_2.csv", col_names = TRUE, na = "NA")
+
+rbind(BordCreek2015, BordCreek2016_1, BordCreek2016_2) -> BordeauxMasterData
+
+BordeauxMasterData %>% 
+separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Date = lubridate::mdy(Date)) -> BordeauxMasterData
+
+BordeauxMasterData %>% 
+mutate(Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9))) -> BordeauxMasterData
+
+BordeauxMasterData %>% 
+  mutate(Lat = "42.8097",
+         Long = "-102.9221") -> BordeauxMasterData
+
+BordeauxMasterData %>% 
+  mutate(Basin = "White-Hat",
+         Water = "Warmwater") -> BordeauxMasterData
+
+BordeauxMasterData %>% 
+  mutate(Stream = "Bordeaux Creek",
+         Site = "North") -> BordeauxMasterData
+
+select(BordeauxMasterData, -ID) -> BordeauxMasterData
+
+# write_csv(BordeauxData, "C:/Users/alex.engel/Documents/GitHub/templogger/BordeauxData.csv")
+
+BordeauxMasterData %>% 
+  mutate(Deployment = "Year-round") -> BordeauxMasterData
+```
+
+###
+
+#Creating the Master File
+
+Will rbind all `MasterData` files together.
+
+```{r}
+rbind(AllianceMasterData,
+      BordeauxMasterData, 
+      BordCreekCliffsMasterData, 
+      BoneCreekMasterData) -> MasterData
+
+MasterData[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)]
+```
+
+
+#Summary Data
+
+## 5/21/2020
+
+```{r}
+library(tidyverse)
+library(readr)
+
+### Bordeaux ###
+BordeauxCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Bordeaux_Crk_Summary.csv", col_names = TRUE, na = "NA")
+
+BordeauxWMA <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Bordeaux_WMA.csv", col_names = TRUE, na = "NA")
+
+### Chadron Creek ###
+
+ChradronCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Chadron_Crkexit_Summary.csv", col_names = TRUE, na = "NA")
+
+### Ash Creek ###
+
+EastAshCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/EAsh_CrkUSFS_Summary.csv", col_names = TRUE, na = "NA")
+
+```
 
 
 ```{r, temploggerXL}
@@ -30,6 +278,8 @@ Locations <- read_excel("C:/Users/alex.engel/Documents/GitHub/templogger/templog
 
 
 #Raw Data
+
+## 5/21/2020
 
 ```{r, rawLogs}
 library(tidyverse)
@@ -69,6 +319,8 @@ rbind(BordeauxWMA, ChadronCreek, EastAshCreek) -> rawData
 
 ## Cleaning the raw data
 
+## 5/21/2020
+
 ```{r}
 library(dplyr)
 library(tidyr)
@@ -91,54 +343,3 @@ head(rawData)
 
 write_csv(rawData, "C:/Users/alex.engel/Documents/GitHub/templogger/rawData.csv")
 ```
-
-##Plot
-
-```{r, quckPlot}
-library(ggplot2)
-
-rawData %>% 
-  filter(Location == "Bordeaux WMA") %>% 
-ggplot() +
-  geom_line(aes(x = Date, y = TempF, colour = Location)) +
-  theme_classic()
-
-rawData %>% 
-  filter(Location == "Chadron Creek (Park Exit)") %>% 
-ggplot() +
-  geom_line(aes(x = Date, y = TempF), colour = "dodgerblue") +
-  theme_classic()
-
-rawData %>% 
-  filter(Location == "East Ash Creek") %>% 
-ggplot() +
-  geom_line(aes(x = Date, y = TempF), colour = "forestgreen") +
-  theme_classic()
-
-ggplot(data = rawData) +
-  geom_line(aes(x = Date, y = TempF, colour = Location), alpha = 0.75) +
-  theme_classic()
-```
-
-
-#Summary Data
-
-```{r}
-library(tidyverse)
-library(readr)
-
-### Bordeaux ###
-BordeauxCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Bordeaux_Crk_Summary.csv", col_names = TRUE, na = "NA")
-
-BordeauxWMA <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Bordeaux_WMA.csv", col_names = TRUE, na = "NA")
-
-### Chadron Creek ###
-
-ChradronCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/Chadron_Crkexit_Summary.csv", col_names = TRUE, na = "NA")
-
-### Ash Creek ###
-
-EastAshCreekSum <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/EAsh_CrkUSFS_Summary.csv", col_names = TRUE, na = "NA")
-
-```
-
