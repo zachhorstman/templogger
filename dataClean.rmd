@@ -266,10 +266,22 @@ rbind(AllianceMasterData,
       BoneCreekMasterData,
       CedarRiverMaster) -> MasterData
 
+
 MasterData[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)]
 
+#216476 obs. of 14 vars
+
 write_csv(MasterData, "C:/Users/alex.engel/Documents/GitHub/templogger/MasterData.csv")
-write.
+
+```
+
+
+```{r}
+library(tidyverse)
+
+#216476 obs. of 14 vars
+
+MasterData <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/MasterData.csv", col_names = TRUE, na = "NA")
 ```
 
 
