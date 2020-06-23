@@ -280,7 +280,9 @@ ChadCreekAboveMaster %>%
 ###Nine Mile OFW
 
 ```{r}
-NineMileCreekOFW <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/NineMileCreekOFW_2016.csv", col_names = TRUE, na = "NA")
+library(tidyverse)
+
+NineMileCreekOFW <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/Done/NineMileCreekOFW_2016.csv", col_names = TRUE, na = "NA")
 
 NineMileCreekOFW %>% 
   separate(DateTime, c("Date", "Time"), sep = " ") %>% 
@@ -310,9 +312,9 @@ NineMileCreekWMA_2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogg
 
 NineMileCreekWMA_2016 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/NineMileCreekWMA_2016.csv", col_names = TRUE, na = "NA")
 
-NineMileCreekWMA_2017 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/NineMileCreekWMA_2017.csv", col_names = TRUE, na = "NA")
+NineMileCreekWMA_2017 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/Done/NineMileCreekWMA_2017.csv", col_names = TRUE, na = "NA")
 
-NineMileCreekWMA_2017_2 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/NineMileCreekWMA_2017_2.csv", col_names = TRUE, na = "NA")
+NineMileCreekWMA_2017_2 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/Done/NineMileCreekWMA_2017_2.csv", col_names = TRUE, na = "NA")
 
 rbind(NineMileCreekWMA_2015, NineMileCreekWMA_2016, NineMileCreekWMA_2017, NineMileCreekWMA_2017_2) -> NineMileCreekWMAmaster
 
