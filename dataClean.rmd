@@ -364,6 +364,142 @@ WhiteRiverAndrewsMaster %>%
 
 ```
 
+###Deadmans Creek 
+```{r}
+library(tidyverse)
+
+DeadmansCreek_2016 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/Done/DeadmansCreek_2016.csv", col_names = TRUE, na = "NA")
+
+DeadmansCreek_2016 %>% 
+  select(c(1:4)) %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "Deadmans Creek",
+         Site = "Site 1",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "White-Hat",
+         Water = "Coolwater",
+         Lat = "42.62613",
+         Long = "-103.4999",
+         Deployment = "Seasonal") %>% 
+  select(-ID) %>% 
+  select(-Location) -> DeadmansCreekMaster
+
+DeadmansCreekMaster[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)] -> DeadmansCreekMaster
+```
+
+###Dismal River Dunning
+
+```{r}
+DismalRiverDunning_2017 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/DismalRiverDunning_2017.csv", col_names = TRUE, na = "NA")
+
+DismalRiverDunning_2017 %>% 
+  select(c(1:4)) %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "Dismal River",
+         Site = "Dunning",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "Loup",
+         Water = "Warmwater",
+         Lat = "41.82251",
+         Long = "-100.1011",
+         Deployment = "Seasonal") %>% 
+  select(-ID) %>% 
+  select(-Location) -> DismalRiverDunningMaster
+
+DismalRiverDunningMaster[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)] -> DismalRiverDunningMaster
+```
+
+###Dry Creek
+```{r}
+DryCreekNumber1_2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/DryCreekNumber1_2015.csv", col_names = TRUE, na = "NA")
+
+select(DryCreekNumber1_2015, c(1:4)) -> DryCreekNumber1_2015
+
+DryCreekNumber1_2016 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/DryCreekNumber1_2016.csv", col_names = TRUE, na = "NA")
+
+select(DryCreekNumber1_2016, c(1:4)) -> DryCreekNumber1_2016
+
+DryCreekNumber1_2017 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/DryCreekNumber1_2017.csv", col_names = TRUE, na = "NA")
+
+select(DryCreekNumber1_2017, c(1:4)) -> DryCreekNumber1_2017
+
+DryCreekNumber1_2017_2 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/DryCreekNumber1_2017_2.csv", col_names = TRUE, na = "NA")
+
+select(DryCreekNumber1_2017_2, c(1:4)) -> DryCreekNumber1_2017_2
+
+rbind(DryCreekNumber1_2015, DryCreekNumber1_2016, DryCreekNumber1_2017, DryCreekNumber1_2017_2) -> DryCreekMaster
+
+DryCreekMaster %>% 
+  select(c(1:4)) %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "Dry Creek",
+         Site = "#1",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "Niobrara",
+         Water = "Warmwater",
+         Lat = "42.57188",
+         Long = "-100.1716",
+         Deployment = "Year-round") %>% 
+  select(-ID) %>% 
+  select(-Location) -> DryCreekMaster
+
+DryCreekMaster[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)] -> DryCreekMaster
+```
+
+###East Ash Creek
+```{r}
+EastAshCreekUSFS_2016 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/EastAshCreekUSFS_2016.csv", col_names = TRUE, na = "NA")
+
+select(EastAshCreekUSFS_2016, c(1:4)) -> EastAshCreekUSFS_2016
+
+EastAshCreekUSFS_2017 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/EastAshCreekUSFS_2017.csv", col_names = TRUE, na = "NA")
+
+select(EastAshCreekUSFS_2017, c(1:4)) -> EastAshCreekUSFS_2017
+
+EastAshCreekUSFS_2018 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/EastAshCreekUSFS_2018.csv", col_names = TRUE, na = "NA")
+
+select(EastAshCreekUSFS_2018, c(1:4)) -> EastAshCreekUSFS_2018
+
+rbind(EastAshCreekUSFS_2016, EastAshCreekUSFS_2017, EastAshCreekUSFS_2018) -> EastAshCreekMaster
+
+EastAshCreekMaster %>% 
+  select(c(1:4)) %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "East Ash Creek",
+         Site = "USFS",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "White-Hat",
+         Water = "Warmwater",
+         Lat = "42.62373",
+         Long = "-103.1904",
+         Deployment = "Year-round") %>% 
+  select(-ID) %>% 
+  select(-Location) -> EastAshCreekMaster
+
+EastAshCreekMaster[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)] -> EastAshCreekMaster
+
+str(EastAshCreekMaster)
+
+as_datetime()
+
+str(MasterData)
+```
 
 
 #Creating the Master File
@@ -371,7 +507,7 @@ WhiteRiverAndrewsMaster %>%
 rbind all `MasterData` files together.
 
 ```{r}
-#216476 obs. of 14 vars
+#216,476 obs. of 14 vars
 
 # rbind(AllianceMasterData,
 #       BordeauxMasterData, 
@@ -379,20 +515,35 @@ rbind all `MasterData` files together.
 #       BoneCreekMasterData,
 #       CedarRiverMaster) -> MasterData
 
-rbind(ChadCreekAboveMaster,
-      NineMileCreekOFWmaster,
-      NineMileCreekWMAmaster,
-      WhiteRiverAndrewsMaster) -> MasterData1
+#315,125 obs. of 14 vars
+# rbind(ChadCreekAboveMaster,
+      # NineMileCreekOFWmaster,
+      # NineMileCreekWMAmaster,
+      # WhiteRiverAndrewsMaster) -> MasterData1
+MasterData %>% 
+  mutate(Time = as.character(Time)) -> MasterData
+
+str(MasterData)
+
+rbind(MasterData,
+      DeadmansCreekMaster,
+      DismalRiverDunningMaster,
+      DryCreekMaster,
+      EastAshCreekMaster) -> MasterData
+
+head(MasterData)
+tail(MasterData)
+
+EastAshCreekMaster %>% 
+  summarise(na = sum(is.na(Time)))
+
+# MasterData1[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)] -> MasterData1
 
 head(MasterData1)
-tail(MasterData1)
+
+# rbind(MasterData, MasterData1) -> MasterData
 
 
-MasterData1[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)] -> MasterData1
-
-head(MasterData1)
-
-rbind(MasterData, MasterData1) -> MasterData
 
 write_csv(MasterData, "C:/Users/alex.engel/Documents/GitHub/templogger/MasterData.csv")
 
@@ -403,11 +554,9 @@ str(MasterData)
 ```{r}
 library(tidyverse)
 
-#216476 obs. of 14 vars
-
 MasterData <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/MasterData.csv", col_names = TRUE, na = "NA")
 
-MasterData[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)] -> MasterData
+# MasterData[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)] -> MasterData
 
 
 ```
