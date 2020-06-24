@@ -1,17 +1,18 @@
-#Alex Engel
+#An Introduction to Temperature
 
-# Cleaning up the Data
+Temperature has been described as the abiotic master factor when it comes to fishes (See Fry 1971, Brett 1971) but it is also immensly important when talking about anything aquatic. Temperature, along with flow, are primary driving factors in stream ecosystems and therefore should be of preeminant import and its relative ease of capture in the field. 
 
-First, we need to import the data. We have an xcell file ~`templogger2020` that is a collection of all data from 2015-2020 (ish), consisting of *min*, *mean*, and *max*. Each sheet must be brought in seperately, and there are plenty of errors per sheet. This data can't really be used as is and needs a lot of cleaning.
+## Cleaning up the Data
 
+First, we need to import the data. We have an xcell file ~`templogger2020` that is a collection of all data from 2015-2020 (ish), consisting of *min*, *mean*, and *max*. Each sheet must be brought in seperately, and there are plenty of errors per sheet. This data can't really be used as is and needs a lot of cleaning. However, we will use that data to double check our raw data which we are compiling into a single `masterData` file. 
 
-#Master Data CSV
-
-##6/16/2020
+## Raw Data
 
 ### Alliance Drain 1
 
 ```{r}
+##6/16/2020
+
 library(tidyverse)
 
 AllianceDrain2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/Done/AllianceDrainSite1_2015.csv", col_names = TRUE, na = "NA")
@@ -40,13 +41,12 @@ AllianceMasterData %>%
 ```
 
 
-#Bone Creek
-
-##6/16/2020
-
-### Site 1
+### Bone Creek
 
 ```{r}
+##6/16/2020
+### Site 1
+
 BoneCreekSite1_2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/Done/BoneCreekSite1_2015.csv", col_names = TRUE, na = "NA")
 
 BoneCreekSite1_2015 %>% 
@@ -136,13 +136,12 @@ rbind(BoneCreek1, BoneCreek2, BoneCreek3, BoneCreek4) -> BoneCreekMasterData
 ```
 
 
-#Bordeaux Data
-
-##6/16/2020
-
-###Bordeaux Cliffs 
+###Bordeaux Cliffs
 
 ```{r}
+##6/16/2020
+###Bordeaux Cliffs 
+
 BordCreekCliffs_2016 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/Done/BordeauxCreekCliffs_2016.csv", col_names = TRUE, na = "NA")
 
 BordCreekCliffs_2017 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/BordeauxCreekCliffs_2017.csv", col_names = TRUE, na = "NA")
@@ -501,6 +500,113 @@ as_datetime()
 str(MasterData)
 ```
 
+###Long Pine
+```{r}
+library(tidyverse)
+#6/24/2020
+
+#Long Pine Number 1
+LongPineNumber1_2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/LongPineNumber1_2015.csv", col_names = TRUE, na = "NA")
+
+select(LongPineNumber1_2015, c(1:4)) -> LongPineNumber1_2015
+
+LongPineNumber1_2015 %>% 
+  select(c(1:4)) %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "Long Pine Creek",
+         Site = "#1",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "Niobrara",
+         Water = "Coolwater",
+         Lat = "42.70924",
+         Long = "- 99.64276",
+         Deployment = "Year-round") %>% 
+  select(-ID) %>% 
+  select(-Location) -> LongPineNumber1
+
+LongPineNumber1[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)] -> LongPineNumber1
+
+#Long Pine Number 2
+LongPineNumber2_2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/LongPineNumber2_2015.csv", col_names = TRUE, na = "NA")
+
+select(LongPineNumber2_2015, c(1:4)) -> LongPineNumber2_2015
+
+LongPineNumber2_2016 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/LongPineNumber2_2016.csv", col_names = TRUE, na = "NA")
+
+select(LongPineNumber2_2016, c(1:4)) -> LongPineNumber2_2016
+
+LongPineNumber2_2017 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/LongPineNumber2_2017.csv", col_names = TRUE, na = "NA")
+
+select(LongPineNumber2_2017, c(1:4)) -> LongPineNumber2_2017
+
+rbind(LongPineNumber2_2015, LongPineNumber2_2016, LongPineNumber2_2017) -> LongPineNumber2
+
+LongPineNumber2 %>% 
+  select(c(1:4)) %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "Long Pine Creek",
+         Site = "#2",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "Niobrara",
+         Water = "Coolwater",
+         Lat = "42.67914",
+         Long = "-99.69636",
+         Deployment = "Year-round") %>% 
+  select(-ID) %>% 
+  select(-Location) -> LongPineNumber2
+
+LongPineNumber2[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)] -> LongPineNumber2
+
+##LongPineNumber3
+
+LongPineNumber3_2015 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/LongPineNumber3_2015.csv", col_names = TRUE, na = "NA")
+
+select(LongPineNumber3_2015, c(1:4)) -> LongPineNumber3_2015
+
+LongPineNumber3_2016 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/LongPineNumber3_2016.csv", col_names = TRUE, na = "NA")
+
+select(LongPineNumber3_2016, c(1:4)) -> LongPineNumber3_2016
+
+LongPineNumber3_2016_2 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/LongPineNumber3_2016_2.csv", col_names = TRUE, na = "NA")
+
+select(LongPineNumber3_2016_2, c(1:4)) -> LongPineNumber3_2016_2
+
+LongPineNumber3_2017 <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/Data/ReadyforR/LongPineNumber3_2017.csv", col_names = TRUE, na = "NA")
+
+select(LongPineNumber3_2017, c(1:4)) -> LongPineNumber3_2017
+
+rbind(LongPineNumber3_2015, LongPineNumber3_2016, LongPineNumber3_2016_2, LongPineNumber3_2017) -> LongPineNumber3
+
+LongPineNumber3 %>% 
+  select(c(1:4)) %>% 
+  separate(DateTime, c("Date", "Time"), sep = " ") %>% 
+  mutate(Stream = "Long Pine Creek",
+         Site = "#3",
+         Date = lubridate::mdy(Date),
+         Month = lubridate::month(Date),
+         Year = lubridate::year(Date),
+         Day = lubridate::day(Date),
+         TempC = (TempF - 32 *(5/9)),
+         Basin = "Niobrara",
+         Water = "Coolwater",
+         Lat = "42.67914",
+         Long = "-99.69636",
+         Deployment = "Year-round") %>% 
+  select(-ID) %>% 
+  select(-Location) -> LongPineNumber3
+
+LongPineNumber3[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)] -> LongPineNumber3
+
+```
+
 
 #Creating the Master File
 
@@ -520,16 +626,20 @@ rbind all `MasterData` files together.
       # NineMileCreekOFWmaster,
       # NineMileCreekWMAmaster,
       # WhiteRiverAndrewsMaster) -> MasterData1
+
+
+
 MasterData %>% 
   mutate(Time = as.character(Time)) -> MasterData
 
 str(MasterData)
 
-rbind(MasterData,
-      DeadmansCreekMaster,
-      DismalRiverDunningMaster,
-      DryCreekMaster,
-      EastAshCreekMaster) -> MasterData
+#497704 obs. of 14 vars
+# rbind(MasterData,
+#       DeadmansCreekMaster,
+#       DismalRiverDunningMaster,
+#       DryCreekMaster,
+#       EastAshCreekMaster) -> MasterData
 
 head(MasterData)
 tail(MasterData)
@@ -558,6 +668,8 @@ MasterData <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/MasterDa
 
 # MasterData[c(4,5,1,7,6,8,2,3,9,10,11,12,13,14)] -> MasterData
 
+str(MasterData)
+
 
 ```
 
@@ -565,9 +677,8 @@ MasterData <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/MasterDa
 
 #Summary Data
 
-## 5/21/2020
-
 ```{r}
+## 5/21/2020
 library(tidyverse)
 library(readr)
 
@@ -610,12 +721,12 @@ Locations <- read_excel("C:/Users/alex.engel/Documents/GitHub/templogger/templog
 ```
 
 
-#Raw Data
-
-## 5/21/2020
+#Raw Data Example
 
 ```{r, rawLogs}
 library(tidyverse)
+
+## 5/21/2020
 
 BordeauxWMA <- read_csv("C:/Users/alex.engel/Documents/GitHub/templogger/2020TempLog/rawBordeaux.csv", col_names = TRUE, na = "NA")
 
@@ -648,13 +759,8 @@ head(EastAshCreek)
 
 rbind(BordeauxWMA, ChadronCreek, EastAshCreek) -> rawData
 
-```
-
-## Cleaning the raw data
-
 ## 5/21/2020
 
-```{r}
 library(dplyr)
 library(tidyr)
 library(lubridate)
