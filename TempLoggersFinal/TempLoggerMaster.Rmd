@@ -1,0 +1,2987 @@
+---
+title: 'Master Temp Logger Code'
+author: "ZachHorstman"
+date: "1/14/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# This report includes every known temperature logger we have recovered (2015-2020). Sites are listed in alphabetical order. Use the Index on the left to easily navigate to graphs.
+
+## Note: Some recorded temperatures may have been of air temperature if stream dried up. 
+```{r, echo=FALSE}
+library(RODBC)
+library(tidyverse)
+
+con <- odbcDriverConnect("Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=W:/Fisheries/Rivers and Streams Program/Temp Loggers/TemperatureLoggers.accdb")
+
+#if adding a new site, simply copy and paste a line here and add the new line of code here.
+# This chunk will take a minute to run all the lines of code...That's a lot of data.
+
+sqlFetch(con, 'AID') -> AID
+sqlFetch(con, 'Bone_Site1') -> Bone_Site1
+sqlFetch(con, 'Bone_Site2') -> Bone_Site2
+sqlFetch(con, 'Bone_Site3') -> Bone_Site3
+sqlFetch(con, 'Bone_Site4') -> Bone_Site4
+sqlFetch(con, 'Bordeaux_Cliffs') -> Bordeaux_Cliffs
+sqlFetch(con, 'Bordeaux_North') -> Bordeaux_North
+sqlFetch(con, 'Cedar_Site1') -> Cedar_Site1
+sqlFetch(con, 'Chadron_AboveDischarge') -> Chadron_AboveDischarge
+sqlFetch(con, 'Chadron_BelowDischarge') -> Chadron_BelowDischarge
+sqlFetch(con, 'Chadron_CCRHeadwaters') -> Chadron_CCRHeadwaters
+sqlFetch(con, 'Chadron_ParkEntrance') -> Chadron_ParkEntrance
+sqlFetch(con, 'Chadron_ParkExit') -> Chadron_ParkExit
+sqlFetch(con, 'Deadmans') -> Deadmans
+sqlFetch(con, 'Dismal_Dunning') -> Dismal_Dunning
+sqlFetch(con, 'Dry_Site1') -> Dry_Site1
+sqlFetch(con, 'DrySpottedtail_Hanson') -> DrySpottedtail_Hanson
+sqlFetch(con, 'DrySpottedtail_Steffl') -> DrySpottedtail_Steffl
+sqlFetch(con, 'EastAsh_USFS') -> EastAsh_USFS
+sqlFetch(con, 'Evergreen_Site1') -> Evergreen_Site1
+sqlFetch(con, 'Gordon_Site1') -> Gordon_Site1
+sqlFetch(con, 'Gordon_Site2') -> Gordon_Site2
+sqlFetch(con, 'Gordon_Site3') -> Gordon_Site3
+sqlFetch(con, 'Gordon_Site4') -> Gordon_Site4
+sqlFetch(con, 'Holt_WMA') -> Holt_WMA
+sqlFetch(con, 'Larabee_Dolezal') -> Larabee_Dolezal
+sqlFetch(con, 'Larabee_Forney') -> Larabee_Forney
+sqlFetch(con, 'Larabee_School') -> Larabee_School
+sqlFetch(con, 'LongPine_Site2') -> LongPine_Site2
+sqlFetch(con, 'LongPine_Site3') -> LongPine_Site3
+sqlFetch(con, 'LongPine_Site4') -> LongPine_Site4
+sqlFetch(con, 'LongPine_Site6') -> LongPine_Site6
+sqlFetch(con, 'MiddleLoup_MiddleBranch') -> MiddleLoup_MiddleBranch
+sqlFetch(con, 'MiddleLoup_Mullens') -> MiddleLoup_Mullens
+sqlFetch(con, 'MiddleLoup_SouthBranch') -> MiddleLoup_SouthBranch
+sqlFetch(con, 'Minnechaduza_Site1') -> Minnechaduza_Site1
+sqlFetch(con, 'Minnechaduza_Site2') -> Minnechaduza_Site2
+sqlFetch(con, 'Minnechaduza_Site3') -> Minnechaduza_Site3
+sqlFetch(con, 'Monroe') -> Monroe
+sqlFetch(con, '9Mile_Lower') -> NineMileLower
+sqlFetch(con, '9Mile_OFW') -> NineMileOFW
+sqlFetch(con, '9Mile_WMA') -> NineMileWMA
+sqlFetch(con, 'Niobrara_HWY71') -> Niobrara_HWY71
+sqlFetch(con, 'Niobrara_HWY385') -> Niobrara_HWY385
+sqlFetch(con, 'Niobrara_Schoolhouse') -> Niobrara_Schoolhouse
+sqlFetch(con, 'Pine_Middle') -> Pine_Middle
+sqlFetch(con, 'Pine_North') -> Pine_North
+sqlFetch(con, 'Pine_South') -> Pine_South
+sqlFetch(con, 'Plum_Site1') -> Plum_Site1
+sqlFetch(con, 'Plum_Site2') -> Plum_Site2
+sqlFetch(con, 'Plum_Site3') -> Plum_Site3
+sqlFetch(con, 'Plum_Site4') -> Plum_Site4
+sqlFetch(con, 'Plum_Site5') -> Plum_Site5
+sqlFetch(con, 'Plum_Site6') -> Plum_Site6
+sqlFetch(con, 'Plum_Site7') -> Plum_Site7
+sqlFetch(con, 'Plum_Site8') -> Plum_Site8
+sqlFetch(con, 'Plum_Site9') -> Plum_Site9
+sqlFetch(con, 'SandDraw_Site1') -> SandDraw_Site1
+sqlFetch(con, 'SandDraw_Site2') -> SandDraw_Site2
+sqlFetch(con, 'Schlagel_newWMA') -> Schlagel_newWMA
+sqlFetch(con, 'Schlagel_Swanson') -> Schlagel_Swanson
+sqlFetch(con, 'Schlagel_Vanderplow') -> Schlagel_Vanderplow
+sqlFetch(con, 'Schlagel_WMA') -> Schlagel_WMA
+sqlFetch(con, 'Sheep_Site1') -> Sheep_Site1
+sqlFetch(con, 'Sheep_Site2') -> Sheep_Site2
+sqlFetch(con, 'Snake_Adamson') -> Snake_Adamson
+sqlFetch(con, 'Snake_HWY61') -> Snake_HWY61
+sqlFetch(con, 'Snake_Upper') -> Snake_Upper
+sqlFetch(con, 'Soldier_MiddleBranch') -> Soldier_MiddleBranch
+sqlFetch(con, 'Sowbelly') -> Sowbelly
+sqlFetch(con, 'WestAsh_USFS') -> WestAsh_USFS
+sqlFetch(con, 'White_Andrews') -> White_Andrews
+sqlFetch(con, 'White_EastFtRob') -> White_EastFtRob
+sqlFetch(con, 'White_GolfCourse') -> White_GolfCourse
+sqlFetch(con, 'White_SwingingBridge') -> White_SwingingBridge
+sqlFetch(con, 'WhiteClay') -> WhiteClay 
+sqlFetch(con, 'Willow_Site1') -> Willow_Site1
+
+sqlFetch(con, 'LoggerLocations') -> LoggerLocations # current logger locations
+colnames(LoggerLocations)[colnames(LoggerLocations)=="Logger Name"] <- "LoggerName"
+
+odbcClose(con)
+```
+
+
+```{r, echo=FALSE, include=FALSE}
+# Interactive Map of each logger location.
+library(tmap)
+library(sf)
+
+#set the map to interactive viewing --so you can click on the points
+tmap_mode("view")
+
+#Put data in a format for sf 
+mapdata <- st_as_sf(LoggerLocations, coords = c("Longitude", "Latitude"), crs = 4326)
+
+tmap_options(max.categories = 34)
+
+#make a pretty map
+allmapdata <- tm_shape(mapdata)+
+  #Add basemap
+  tm_basemap(server = c('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}')) +
+  #add points to map with color changing by ID. 
+  #"popup.vars" determines what is shown when a location is selected
+  tm_symbols(col = "Waterbody", 
+             palette = "Dark2", alpha = 0.75,
+             #title.size = "Logger_Name",
+             #title.col = "Logger_Name", id = "Logger_Name",
+             popup.vars = c("Waterbody", "Site"),
+             #size = 10,
+             style = "pretty",
+             clustering = F) +
+  tm_layout(legend.outside = T) +
+  tm_view(symbol.size.fixed = T)
+
+allmapdata
+```
+
+# Alliance Drainage
+```{r, echo=FALSE, warning=FALSE}
+#get data
+AIDdata<- AID%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  AIDdata$tempRange = "Cool"
+  AIDdata$tempRange[AIDdata$Temp < 68] <- "Cold"
+  AIDdata$tempRange[AIDdata$Temp >= 77] <- "Warm"
+  AIDdata$tempRange <- factor(AIDdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = AIDdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Alliance Drainage") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Bone Creek - Site 1
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Bone_Site1data<- Bone_Site1%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Bone_Site1data$tempRange = "Cool"
+  Bone_Site1data$tempRange[Bone_Site1data$Temp < 68] <- "Cold"
+  Bone_Site1data$tempRange[Bone_Site1data$Temp >= 77] <- "Warm"
+  Bone_Site1data$tempRange <- factor(Bone_Site1data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Bone_Site1data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Bone Creek - Site 1") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Bone Creek - Site 2
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Bone_Site2data<- Bone_Site2%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Bone_Site2data$tempRange = "Cool"
+  Bone_Site2data$tempRange[Bone_Site2data$Temp < 68] <- "Cold"
+  Bone_Site2data$tempRange[Bone_Site2data$Temp >= 77] <- "Warm"
+  Bone_Site2data$tempRange <- factor(Bone_Site2data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Bone_Site2data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Bone Creek - Site 2") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Bone Creek - Site 3
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Bone_Site3data<- Bone_Site3%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Bone_Site3data$tempRange = "Cool"
+  Bone_Site3data$tempRange[Bone_Site3data$Temp < 68] <- "Cold"
+  Bone_Site3data$tempRange[Bone_Site3data$Temp >= 77] <- "Warm"
+  Bone_Site3data$tempRange <- factor(Bone_Site3data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Bone_Site3data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Bone Creek - Site 3") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Bone Creek - Site 4
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Bone_Site4data<- Bone_Site1%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Bone_Site4data$tempRange = "Cool"
+  Bone_Site4data$tempRange[Bone_Site4data$Temp < 68] <- "Cold"
+  Bone_Site4data$tempRange[Bone_Site4data$Temp >= 77] <- "Warm"
+  Bone_Site4data$tempRange <- factor(Bone_Site4data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Bone_Site4data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Bone Creek - Site 4") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Bordeaux Creek - Cliffs
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Bordeaux_Cliffsdata<- Bordeaux_Cliffs%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Bordeaux_Cliffsdata$tempRange = "Cool"
+  Bordeaux_Cliffsdata$tempRange[Bordeaux_Cliffsdata$Temp < 68] <- "Cold"
+  Bordeaux_Cliffsdata$tempRange[Bordeaux_Cliffsdata$Temp >= 77] <- "Warm"
+  Bordeaux_Cliffsdata$tempRange <- factor(Bordeaux_Cliffsdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Bordeaux_Cliffsdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Bordeaux Creek - Cliffs") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Bordeaux - North
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Bordeaux_Northdata<- Bordeaux_North%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Bordeaux_Northdata$tempRange = "Cool"
+  Bordeaux_Northdata$tempRange[Bordeaux_Northdata$Temp < 68] <- "Cold"
+  Bordeaux_Northdata$tempRange[Bordeaux_Northdata$Temp >= 77] <- "Warm"
+  Bordeaux_Northdata$tempRange <- factor(Bordeaux_Northdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Bordeaux_Northdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Bordeaux Creek - North") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Cedar Creek - Site 1
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Cedar_Site1data<- Cedar_Site1%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Cedar_Site1data$tempRange = "Cool"
+  Cedar_Site1data$tempRange[Cedar_Site1data$Temp < 68] <- "Cold"
+  Cedar_Site1data$tempRange[Cedar_Site1data$Temp >= 77] <- "Warm"
+  Cedar_Site1data$tempRange <- factor(Cedar_Site1data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Cedar_Site1data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Cedar Creek - Site 1") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Chadron Creek - Above Discharge
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Chadron_AboveDischargedata<- Chadron_AboveDischarge%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Chadron_AboveDischargedata$tempRange = "Cool"
+  Chadron_AboveDischargedata$tempRange[Chadron_AboveDischargedata$Temp < 68] <- "Cold"
+  Chadron_AboveDischargedata$tempRange[Chadron_AboveDischargedata$Temp >= 77] <- "Warm"
+  Chadron_AboveDischargedata$tempRange <- factor(Chadron_AboveDischargedata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Chadron_AboveDischargedata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Chadron Creek - Above Discharge") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Chadron Creek - Below Discharge
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Chadron_BelowDischargedata<- Chadron_AboveDischarge%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Chadron_AboveDischargedata$tempRange = "Cool"
+  Chadron_AboveDischargedata$tempRange[Chadron_AboveDischargedata$Temp < 68] <- "Cold"
+  Chadron_AboveDischargedata$tempRange[Chadron_AboveDischargedata$Temp >= 77] <- "Warm"
+  Chadron_AboveDischargedata$tempRange <- factor(Chadron_AboveDischargedata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Chadron_AboveDischargedata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Chadron Creek - Below Discharge") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Chadron Creek - CCR Headwaters (WMA)
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Chadron_CCRHeadwatersdata<- Chadron_CCRHeadwaters%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Chadron_CCRHeadwatersdata$tempRange = "Cool"
+  Chadron_CCRHeadwatersdata$tempRange[Chadron_CCRHeadwatersdata$Temp < 68] <- "Cold"
+  Chadron_CCRHeadwatersdata$tempRange[Chadron_CCRHeadwatersdata$Temp >= 77] <- "Warm"
+  Chadron_CCRHeadwatersdata$tempRange <- factor(Chadron_CCRHeadwatersdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Chadron_CCRHeadwatersdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Chadron Creek - CCR Headwaters (WMA)") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Chadron Creek - Park Entrance
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Chadron_ParkEntrancedata<- Chadron_ParkEntrance%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Chadron_ParkEntrancedata$tempRange = "Cool"
+  Chadron_ParkEntrancedata$tempRange[Chadron_ParkEntrancedata$Temp < 68] <- "Cold"
+  Chadron_ParkEntrancedata$tempRange[Chadron_ParkEntrancedata$Temp >= 77] <- "Warm"
+  Chadron_ParkEntrancedata$tempRange <- factor(Chadron_ParkEntrancedata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Chadron_ParkEntrancedata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Chadron Creek - Park Entrance") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Chadron Creek - Park Exit
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Chadron_ParkExitdata<- Chadron_ParkExit%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Chadron_ParkExitdata$tempRange = "Cool"
+  Chadron_ParkExitdata$tempRange[Chadron_ParkExitdata$Temp < 68] <- "Cold"
+  Chadron_ParkExitdata$tempRange[Chadron_ParkExitdata$Temp >= 77] <- "Warm"
+  Chadron_ParkExitdata$tempRange <- factor(Chadron_ParkExitdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Chadron_ParkExitdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Chadron Creek - Park Exit") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Deadmans Creek
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Deadmansdata<- Deadmans%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Deadmansdata$tempRange = "Cool"
+  Deadmansdata$tempRange[Deadmansdata$Temp < 68] <- "Cold"
+  Deadmansdata$tempRange[Deadmansdata$Temp >= 77] <- "Warm"
+  Deadmansdata$tempRange <- factor(Deadmansdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Deadmansdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Deadmans Creek") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Dismal River - Dunning
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Dismal_Dunningdata<- Dismal_Dunning%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Dismal_Dunningdata$tempRange = "Cool"
+  Dismal_Dunningdata$tempRange[Dismal_Dunningdata$Temp < 68] <- "Cold"
+  Dismal_Dunningdata$tempRange[Dismal_Dunningdata$Temp >= 77] <- "Warm"
+  Dismal_Dunningdata$tempRange <- factor(Dismal_Dunningdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Dismal_Dunningdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Dismal River - Dunning") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Dry Creek - Site 1
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Dry_Site1data<- Dry_Site1%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Dry_Site1data$tempRange = "Cool"
+  Dry_Site1data$tempRange[Dry_Site1data$Temp < 68] <- "Cold"
+  Dry_Site1data$tempRange[Dry_Site1data$Temp >= 77] <- "Warm"
+  Dry_Site1data$tempRange <- factor(Dry_Site1data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Dry_Site1data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Dry Creek - Site 1") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Dry Spottedtail Creek - Hanson
+```{r, echo=FALSE, warning=FALSE}
+#get data
+DrySpottedtail_Hansondata<- DrySpottedtail_Hanson%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  DrySpottedtail_Hansondata$tempRange = "Cool"
+  DrySpottedtail_Hansondata$tempRange[DrySpottedtail_Hansondata$Temp < 68] <- "Cold"
+  DrySpottedtail_Hansondata$tempRange[DrySpottedtail_Hansondata$Temp >= 77] <- "Warm"
+  DrySpottedtail_Hansondata$tempRange <- factor(DrySpottedtail_Hansondata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = DrySpottedtail_Hansondata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Dry Spottedtail Creek - Hanson") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Dry Spottedtail Creek - Steffl
+```{r, echo=FALSE, warning=FALSE}
+#get data
+DrySpottedtail_Steffldata<- DrySpottedtail_Steffl%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  DrySpottedtail_Steffldata$tempRange = "Cool"
+  DrySpottedtail_Steffldata$tempRange[DrySpottedtail_Steffldata$Temp < 68] <- "Cold"
+  DrySpottedtail_Steffldata$tempRange[DrySpottedtail_Steffldata$Temp >= 77] <- "Warm"
+  DrySpottedtail_Steffldata$tempRange <- factor(DrySpottedtail_Steffldata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = DrySpottedtail_Steffldata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Dry Spottedtail Creek - Steffl") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# East Ash Creek - USFS
+```{r, echo=FALSE, warning=FALSE}
+#get data
+EastAsh_USFSdata<- EastAsh_USFS%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  EastAsh_USFSdata$tempRange = "Cool"
+  EastAsh_USFSdata$tempRange[EastAsh_USFSdata$Temp < 68] <- "Cold"
+  EastAsh_USFSdata$tempRange[EastAsh_USFSdata$Temp >= 77] <- "Warm"
+  EastAsh_USFSdata$tempRange <- factor(EastAsh_USFSdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = EastAsh_USFSdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="East Ash Creek - USFS") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Evergreen Creek - Site 1
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Evergreen_Site1data<- Evergreen_Site1%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Evergreen_Site1data$tempRange = "Cool"
+  Evergreen_Site1data$tempRange[Evergreen_Site1data$Temp < 68] <- "Cold"
+  Evergreen_Site1data$tempRange[Evergreen_Site1data$Temp >= 77] <- "Warm"
+  Evergreen_Site1data$tempRange <- factor(Evergreen_Site1data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Evergreen_Site1data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Evergreen Creek - Site 1") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Gordon Creek - Site 1
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Gordon_Site1data<- Gordon_Site1%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Gordon_Site1data$tempRange = "Cool"
+  Gordon_Site1data$tempRange[Gordon_Site1data$Temp < 68] <- "Cold"
+  Gordon_Site1data$tempRange[Gordon_Site1data$Temp >= 77] <- "Warm"
+  Gordon_Site1data$tempRange <- factor(Gordon_Site1data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Gordon_Site1data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Gordon Creek - Site 1") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Gordon Creek - Site 2
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Gordon_Site2data<- Gordon_Site2%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Gordon_Site2data$tempRange = "Cool"
+  Gordon_Site2data$tempRange[Gordon_Site2data$Temp < 68] <- "Cold"
+  Gordon_Site2data$tempRange[Gordon_Site2data$Temp >= 77] <- "Warm"
+  Gordon_Site2data$tempRange <- factor(Gordon_Site2data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Gordon_Site2data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Gordon Creek - Site 2") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Gordon Creek - Site 3
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Gordon_Site3data<- Gordon_Site3%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Gordon_Site3data$tempRange = "Cool"
+  Gordon_Site3data$tempRange[Gordon_Site3data$Temp < 68] <- "Cold"
+  Gordon_Site3data$tempRange[Gordon_Site3data$Temp >= 77] <- "Warm"
+  Gordon_Site3data$tempRange <- factor(Gordon_Site3data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Gordon_Site3data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Gordon Creek - Site 3") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Gordon Creek - Site 4
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Gordon_Site4data<- Gordon_Site4%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Gordon_Site3data$tempRange = "Cool"
+  Gordon_Site3data$tempRange[Gordon_Site3data$Temp < 68] <- "Cold"
+  Gordon_Site3data$tempRange[Gordon_Site3data$Temp >= 77] <- "Warm"
+  Gordon_Site3data$tempRange <- factor(Gordon_Site3data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Gordon_Site3data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Gordon Creek - Site 4") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Holt Creek - WMA
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Holt_WMAdata<- Holt_WMA%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Holt_WMAdata$tempRange = "Cool"
+  Holt_WMAdata$tempRange[Holt_WMAdata$Temp < 68] <- "Cold"
+  Holt_WMAdata$tempRange[Holt_WMAdata$Temp >= 77] <- "Warm"
+  Holt_WMAdata$tempRange <- factor(Holt_WMAdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Holt_WMAdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Holt Creek- WMA") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Larabee Creek - Dolezal
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Larabee_Dolezaldata<- Larabee_Dolezal%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Larabee_Dolezaldata$tempRange = "Cool"
+  Larabee_Dolezaldata$tempRange[Larabee_Dolezaldata$Temp < 68] <- "Cold"
+  Larabee_Dolezaldata$tempRange[Larabee_Dolezaldata$Temp >= 77] <- "Warm"
+  Larabee_Dolezaldata$tempRange <- factor(Larabee_Dolezaldata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Larabee_Dolezaldata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Larabee Creek - Dolezal") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Larabee Creek - Forney
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Larabee_Forneydata<- Larabee_Forney%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Larabee_Forneydata$tempRange = "Cool"
+  Larabee_Forneydata$tempRange[Larabee_Forneydata$Temp < 68] <- "Cold"
+  Larabee_Forneydata$tempRange[Larabee_Forneydata$Temp >= 77] <- "Warm"
+  Larabee_Forneydata$tempRange <- factor(Larabee_Forneydata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Larabee_Forneydata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Larabee Creek - Forney") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Larabee Creek - School
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Larabee_Schooldata<- Larabee_School%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Larabee_Schooldata$tempRange = "Cool"
+  Larabee_Schooldata$tempRange[Larabee_Schooldata$Temp < 68] <- "Cold"
+  Larabee_Schooldata$tempRange[Larabee_Schooldata$Temp >= 77] <- "Warm"
+  Larabee_Schooldata$tempRange <- factor(Larabee_Schooldata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Larabee_Schooldata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Larabee Creek - School") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Long Pine Creek - Site 2
+```{r, echo=FALSE, warning=FALSE}
+#get data
+LongPine_Site2data<- LongPine_Site2%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  LongPine_Site2data$tempRange = "Cool"
+  LongPine_Site2data$tempRange[LongPine_Site2data$Temp < 68] <- "Cold"
+  LongPine_Site2data$tempRange[LongPine_Site2data$Temp >= 77] <- "Warm"
+  LongPine_Site2data$tempRange <- factor(LongPine_Site2data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = LongPine_Site2data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Long Pine Creek - Site 2") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Long Pine Creek - Site 3
+```{r, echo=FALSE, warning=FALSE}
+#get data
+LongPine_Site3data<- LongPine_Site3%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  LongPine_Site3data$tempRange = "Cool"
+  LongPine_Site3data$tempRange[LongPine_Site3data$Temp < 68] <- "Cold"
+  LongPine_Site3data$tempRange[LongPine_Site3data$Temp >= 77] <- "Warm"
+  LongPine_Site3data$tempRange <- factor(LongPine_Site3data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = LongPine_Site3data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Long Pine Creek - Site 3") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Long Pine Creek - Site 4
+```{r, echo=FALSE, warning=FALSE}
+#get data
+LongPine_Site4data<- LongPine_Site4%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Deadmansdata$tempRange = "Cool"
+  Deadmansdata$tempRange[Deadmansdata$Temp < 68] <- "Cold"
+  Deadmansdata$tempRange[Deadmansdata$Temp >= 77] <- "Warm"
+  Deadmansdata$tempRange <- factor(Deadmansdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Deadmansdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Long Pine Creek - Site 4") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Long Pine Creek - Site 6
+```{r, echo=FALSE, warning=FALSE}
+#get data
+LongPine_Site6data<- LongPine_Site6%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  LongPine_Site6data$tempRange = "Cool"
+  LongPine_Site6data$tempRange[LongPine_Site6data$Temp < 68] <- "Cold"
+  LongPine_Site6data$tempRange[LongPine_Site6data$Temp >= 77] <- "Warm"
+  LongPine_Site6data$tempRange <- factor(LongPine_Site6data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = LongPine_Site6data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Long Pine Creek - Site 6") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Middle Loup River - Middle Branch
+```{r, echo=FALSE, warning=FALSE}
+#get data
+MiddleLoup_MiddleBranchdata<- MiddleLoup_MiddleBranch%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  MiddleLoup_MiddleBranchdata$tempRange = "Cool"
+  MiddleLoup_MiddleBranchdata$tempRange[MiddleLoup_MiddleBranchdata$Temp < 68] <- "Cold"
+  MiddleLoup_MiddleBranchdata$tempRange[MiddleLoup_MiddleBranchdata$Temp >= 77] <- "Warm"
+  MiddleLoup_MiddleBranchdata$tempRange <- factor(MiddleLoup_MiddleBranchdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = MiddleLoup_MiddleBranchdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Middle Loup River - Middle Branch") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Middle Loup River - Mullens
+```{r, echo=FALSE, warning=FALSE}
+#get data
+MiddleLoup_Mullensdata<- MiddleLoup_Mullens%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  MiddleLoup_Mullensdata$tempRange = "Cool"
+  MiddleLoup_Mullensdata$tempRange[MiddleLoup_Mullensdata$Temp < 68] <- "Cold"
+  MiddleLoup_Mullensdata$tempRange[MiddleLoup_Mullensdata$Temp >= 77] <- "Warm"
+  MiddleLoup_Mullensdata$tempRange <- factor(MiddleLoup_Mullensdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = MiddleLoup_Mullensdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Middle Loup River - Mullens") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Middle Loup River - South Branch
+```{r, echo=FALSE, warning=FALSE}
+#get data
+MiddleLoup_SouthBranchdata<- MiddleLoup_SouthBranch%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  MiddleLoup_SouthBranchdata$tempRange = "Cool"
+  MiddleLoup_SouthBranchdata$tempRange[MiddleLoup_SouthBranchdata$Temp < 68] <- "Cold"
+  MiddleLoup_SouthBranchdata$tempRange[MiddleLoup_SouthBranchdata$Temp >= 77] <- "Warm"
+  MiddleLoup_SouthBranchdata$tempRange <- factor(MiddleLoup_SouthBranchdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = MiddleLoup_SouthBranchdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Middle Loup River - South Branch") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Minnechaduza Creek - Site 1
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Minnechaduza_Site1data<- Minnechaduza_Site1%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Minnechaduza_Site1data$tempRange = "Cool"
+  Minnechaduza_Site1data$tempRange[Minnechaduza_Site1data$Temp < 68] <- "Cold"
+  Minnechaduza_Site1data$tempRange[Minnechaduza_Site1data$Temp >= 77] <- "Warm"
+  Minnechaduza_Site1data$tempRange <- factor(Minnechaduza_Site1data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Minnechaduza_Site1data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Minnechaduza Creek - Site 1") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Minnechaduza Creek - Site 2
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Minnechaduza_Site2data<- Minnechaduza_Site2%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Minnechaduza_Site2data$tempRange = "Cool"
+  Minnechaduza_Site2data$tempRange[Minnechaduza_Site2data$Temp < 68] <- "Cold"
+  Minnechaduza_Site2data$tempRange[Minnechaduza_Site2data$Temp >= 77] <- "Warm"
+  Minnechaduza_Site2data$tempRange <- factor(Minnechaduza_Site2data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Minnechaduza_Site2data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Minnechaduza Creek - Site 2") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Minnechaduza Creek - Site 3
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Minnechaduza_Site3data<- Minnechaduza_Site3%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Minnechaduza_Site3data$tempRange = "Cool"
+  Minnechaduza_Site3data$tempRange[Minnechaduza_Site3data$Temp < 68] <- "Cold"
+  Minnechaduza_Site3data$tempRange[Minnechaduza_Site3data$Temp >= 77] <- "Warm"
+  Minnechaduza_Site3data$tempRange <- factor(Minnechaduza_Site3data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Minnechaduza_Site3data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Minnechaduza Creek - Site 3") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Monroe Creek
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Monroedata<- Monroe%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Monroedata$tempRange = "Cool"
+  Monroedata$tempRange[Monroedata$Temp < 68] <- "Cold"
+  Monroedata$tempRange[Monroedata$Temp >= 77] <- "Warm"
+  Monroedata$tempRange <- factor(Monroedata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Monroedata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Monroe Creek") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Nine Mile Creek - Lower
+```{r, echo=FALSE, warning=FALSE}
+#get data
+NineMileLowerdata<- NineMileLower%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  NineMileLowerdata$tempRange = "Cool"
+  NineMileLowerdata$tempRange[NineMileLowerdata$Temp < 68] <- "Cold"
+  NineMileLowerdata$tempRange[NineMileLowerdata$Temp >= 77] <- "Warm"
+  NineMileLowerdata$tempRange <- factor(NineMileLowerdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = NineMileLowerdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Nine Mile Creek - Lower") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Nine Mile Creek - OFW
+```{r, echo=FALSE, warning=FALSE}
+#get data
+NineMileOFWdata<- NineMileOFW%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  NineMileOFWdata$tempRange = "Cool"
+  NineMileOFWdata$tempRange[NineMileOFWdata$Temp < 68] <- "Cold"
+  NineMileOFWdata$tempRange[NineMileOFWdata$Temp >= 77] <- "Warm"
+  NineMileOFWdata$tempRange <- factor(NineMileOFWdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = NineMileOFWdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Nine Mile Creek - OFW") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Nine Mile Creek - WMA
+```{r, echo=FALSE, warning=FALSE}
+#get data
+NineMileWMAdata<- NineMileWMA%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  NineMileWMAdata$tempRange = "Cool"
+  NineMileWMAdata$tempRange[NineMileWMAdata$Temp < 68] <- "Cold"
+  NineMileWMAdata$tempRange[NineMileWMAdata$Temp >= 77] <- "Warm"
+  NineMileWMAdata$tempRange <- factor(NineMileWMAdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = NineMileWMAdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Nine Mile Creek - WMA") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Niobrara River - Highway 71
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Niobrara_HWY71data<- Niobrara_HWY71%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Niobrara_HWY71data$tempRange = "Cool"
+  Niobrara_HWY71data$tempRange[Niobrara_HWY71data$Temp < 68] <- "Cold"
+  Niobrara_HWY71data$tempRange[Niobrara_HWY71data$Temp >= 77] <- "Warm"
+  Niobrara_HWY71data$tempRange <- factor(Niobrara_HWY71data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Niobrara_HWY71data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Niobara River - Hwy 71") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Niobrara River - Highway 385
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Niobrara_HWY385data<- Niobrara_HWY385%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Niobrara_HWY385data$tempRange = "Cool"
+  Niobrara_HWY385data$tempRange[Niobrara_HWY385data$Temp < 68] <- "Cold"
+  Niobrara_HWY385data$tempRange[Niobrara_HWY385data$Temp >= 77] <- "Warm"
+  Niobrara_HWY385data$tempRange <- factor(Niobrara_HWY385data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Niobrara_HWY385data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Niobrara River - Hwy 385") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Niobrara River - Pink Schoolhouse
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Niobrara_Schoolhousedata<- Niobrara_Schoolhouse%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Niobrara_Schoolhousedata$tempRange = "Cool"
+  Niobrara_Schoolhousedata$tempRange[Niobrara_Schoolhousedata$Temp < 68] <- "Cold"
+  Niobrara_Schoolhousedata$tempRange[Niobrara_Schoolhousedata$Temp >= 77] <- "Warm"
+  Niobrara_Schoolhousedata$tempRange <- factor(Niobrara_Schoolhousedata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Niobrara_Schoolhousedata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Niobrara River - Pink Schoolhouse") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Pine Creek - Middle
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Pine_Middledata<- Pine_Middle%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Pine_Middledata$tempRange = "Cool"
+  Pine_Middledata$tempRange[Pine_Middledata$Temp < 68] <- "Cold"
+  Pine_Middledata$tempRange[Pine_Middledata$Temp >= 77] <- "Warm"
+  Pine_Middledata$tempRange <- factor(Pine_Middledata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Pine_Middledata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Pine Creek - Middle") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Pine Creek - North
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Pine_Northdata<- Pine_North%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Pine_Northdata$tempRange = "Cool"
+  Pine_Northdata$tempRange[Pine_Northdata$Temp < 68] <- "Cold"
+  Pine_Northdata$tempRange[Pine_Northdata$Temp >= 77] <- "Warm"
+  Pine_Northdata$tempRange <- factor(Pine_Northdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Pine_Northdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Pine Creek - North") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Pine Creek - South
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Pine_Southdata<- Pine_South%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Pine_Southdata$tempRange = "Cool"
+  Pine_Southdata$tempRange[Pine_Southdata$Temp < 68] <- "Cold"
+  Pine_Southdata$tempRange[Pine_Southdata$Temp >= 77] <- "Warm"
+  Pine_Southdata$tempRange <- factor(Pine_Southdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Pine_Southdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Pine Creek - South") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Plum Creek - Site 1
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Plum_Site1data<- Plum_Site1%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Plum_Site1data$tempRange = "Cool"
+  Plum_Site1data$tempRange[Plum_Site1data$Temp < 68] <- "Cold"
+  Plum_Site1data$tempRange[Plum_Site1data$Temp >= 77] <- "Warm"
+  Plum_Site1data$tempRange <- factor(Plum_Site1data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Plum_Site1data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Plum Creek - Site 1") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Plum Creek - Site 2
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Plum_Site2data<- Plum_Site2%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Plum_Site2data$tempRange = "Cool"
+  Plum_Site2data$tempRange[Plum_Site2data$Temp < 68] <- "Cold"
+  Plum_Site2data$tempRange[Plum_Site2data$Temp >= 77] <- "Warm"
+  Plum_Site2data$tempRange <- factor(Plum_Site2data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Plum_Site2data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Plum Creek - Site 2") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Plum Creek - Site 3
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Plum_Site3data<- Plum_Site3%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Plum_Site3data$tempRange = "Cool"
+  Plum_Site3data$tempRange[Plum_Site3data$Temp < 68] <- "Cold"
+  Plum_Site3data$tempRange[Plum_Site3data$Temp >= 77] <- "Warm"
+  Plum_Site3data$tempRange <- factor(Plum_Site3data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Plum_Site3data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Plum Creek - Site 3") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Plum Creek - Site 4
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Plum_Site4data<- Plum_Site4%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Plum_Site4data$tempRange = "Cool"
+  Plum_Site4data$tempRange[Plum_Site4data$Temp < 68] <- "Cold"
+  Plum_Site4data$tempRange[Plum_Site4data$Temp >= 77] <- "Warm"
+  Plum_Site4data$tempRange <- factor(Plum_Site4data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Plum_Site4data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Plum Creek- Site 4") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Plum Creek - Site 5
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Plum_Site5data<- Plum_Site5%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Plum_Site5data$tempRange = "Cool"
+  Plum_Site5data$tempRange[Plum_Site5data$Temp < 68] <- "Cold"
+  Plum_Site5data$tempRange[Plum_Site5data$Temp >= 77] <- "Warm"
+  Plum_Site5data$tempRange <- factor(Plum_Site5data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Plum_Site5data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Plum Creek - Site 5") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Plum Creek - Site 6
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Plum_Site6data<- Plum_Site6%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Plum_Site6data$tempRange = "Cool"
+  Plum_Site6data$tempRange[Plum_Site6data$Temp < 68] <- "Cold"
+  Plum_Site6data$tempRange[Plum_Site6data$Temp >= 77] <- "Warm"
+  Plum_Site6data$tempRange <- factor(Plum_Site6data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Plum_Site6data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Plum Creek - Site 6") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Plum Creek - Site 7
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Plum_Site7data<- Plum_Site7%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Plum_Site7data$tempRange = "Cool"
+  Plum_Site7data$tempRange[Plum_Site7data$Temp < 68] <- "Cold"
+  Plum_Site7data$tempRange[Plum_Site7data$Temp >= 77] <- "Warm"
+  Plum_Site7data$tempRange <- factor(Plum_Site7data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Plum_Site7data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Plum Creek - Site 7") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Plum Creek - Site 8
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Plum_Site8data<- Plum_Site8%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Plum_Site8data$tempRange = "Cool"
+  Plum_Site8data$tempRange[Plum_Site8data$Temp < 68] <- "Cold"
+  Plum_Site8data$tempRange[Plum_Site8data$Temp >= 77] <- "Warm"
+  Plum_Site8data$tempRange <- factor(Plum_Site8data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Plum_Site8data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Plum Creek - Site 8") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Plum Creek - Site 9
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Plum_Site9data<- Plum_Site9%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Plum_Site9data$tempRange = "Cool"
+  Plum_Site9data$tempRange[Plum_Site9data$Temp < 68] <- "Cold"
+  Plum_Site9data$tempRange[Plum_Site9data$Temp >= 77] <- "Warm"
+  Plum_Site9data$tempRange <- factor(Plum_Site9data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Plum_Site9data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Plum Creek - Site 9") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Dand Draw - Site 1
+```{r, echo=FALSE, warning=FALSE}
+#get data
+SandDraw_Site1data<- SandDraw_Site1%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  SandDraw_Site1data$tempRange = "Cool"
+  SandDraw_Site1data$tempRange[SandDraw_Site1data$Temp < 68] <- "Cold"
+  SandDraw_Site1data$tempRange[SandDraw_Site1data$Temp >= 77] <- "Warm"
+  SandDraw_Site1data$tempRange <- factor(SandDraw_Site1data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = SandDraw_Site1data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Sand Draw - Site 1") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Sand Draw - Site 2
+```{r, echo=FALSE, warning=FALSE}
+#get data
+SandDraw_Site2data<- SandDraw_Site2%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  SandDraw_Site2data$tempRange = "Cool"
+  SandDraw_Site2data$tempRange[SandDraw_Site2data$Temp < 68] <- "Cold"
+  SandDraw_Site2data$tempRange[SandDraw_Site2data$Temp >= 77] <- "Warm"
+  SandDraw_Site2data$tempRange <- factor(SandDraw_Site2data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = SandDraw_Site2data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Sand Draw - Site 2") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Schlagel Creek - New WMA
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Schlagel_newWMAdata<- Schlagel_newWMA%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Schlagel_newWMAdata$tempRange = "Cool"
+  Schlagel_newWMAdata$tempRange[Schlagel_newWMAdata$Temp < 68] <- "Cold"
+  Schlagel_newWMAdata$tempRange[Schlagel_newWMAdata$Temp >= 77] <- "Warm"
+  Schlagel_newWMAdata$tempRange <- factor(Schlagel_newWMAdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Schlagel_newWMAdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Schlagel Creek - New WMA") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Schlagel Creek - Swanson
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Schlagel_Swansondata<- Schlagel_Swanson%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Schlagel_Swansondata$tempRange = "Cool"
+  Schlagel_Swansondata$tempRange[Schlagel_Swansondata$Temp < 68] <- "Cold"
+  Schlagel_Swansondata$tempRange[Schlagel_Swansondata$Temp >= 77] <- "Warm"
+  Schlagel_Swansondata$tempRange <- factor(Schlagel_Swansondata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Schlagel_Swansondata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Schlagel Creek - Swanson") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Schlagel Creek - Vanderplow
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Schlagel_Vanderplowdata<- Schlagel_Vanderplow%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Schlagel_Vanderplowdata$tempRange = "Cool"
+  Schlagel_Vanderplowdata$tempRange[Schlagel_Vanderplowdata$Temp < 68] <- "Cold"
+  Schlagel_Vanderplowdata$tempRange[Schlagel_Vanderplowdata$Temp >= 77] <- "Warm"
+  Schlagel_Vanderplowdata$tempRange <- factor(Schlagel_Vanderplowdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Schlagel_Vanderplowdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Schlagel Creek - Vanderplow") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Schlagel Creek - WMA
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Schlagel_WMAdata<- Schlagel_WMA%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Schlagel_WMAdata$tempRange = "Cool"
+  Schlagel_WMAdata$tempRange[Schlagel_WMAdata$Temp < 68] <- "Cold"
+  Schlagel_WMAdata$tempRange[Schlagel_WMAdata$Temp >= 77] <- "Warm"
+  Schlagel_WMAdata$tempRange <- factor(Schlagel_WMAdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Schlagel_WMAdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Schlagel Creek - WMA") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Sheep Creek - Site 1
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Sheep_Site1data<- Sheep_Site1%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Sheep_Site1data$tempRange = "Cool"
+  Sheep_Site1data$tempRange[Sheep_Site1data$Temp < 68] <- "Cold"
+  Sheep_Site1data$tempRange[Sheep_Site1data$Temp >= 77] <- "Warm"
+  Sheep_Site1data$tempRange <- factor(Sheep_Site1data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Sheep_Site1data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Sheep Creek - Site 1") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Sheep Creek - Site 2
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Sheep_Site2data<- Sheep_Site2%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Sheep_Site2data$tempRange = "Cool"
+  Sheep_Site2data$tempRange[Sheep_Site2data$Temp < 68] <- "Cold"
+  Sheep_Site2data$tempRange[Sheep_Site2data$Temp >= 77] <- "Warm"
+  Sheep_Site2data$tempRange <- factor(Sheep_Site2data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Sheep_Site2data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Sheep Creek - Site 2") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Snake River - Adamson
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Snake_Adamsondata<- Snake_Adamson%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Snake_Adamsondata$tempRange = "Cool"
+  Snake_Adamsondata$tempRange[Snake_Adamsondata$Temp < 68] <- "Cold"
+  Snake_Adamsondata$tempRange[Snake_Adamsondata$Temp >= 77] <- "Warm"
+  Snake_Adamsondata$tempRange <- factor(Snake_Adamsondata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Snake_Adamsondata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Snake River - Adamson") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Snake River - Highway 61
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Snake_HWY61data<- Snake_HWY61%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Snake_HWY61data$tempRange = "Cool"
+  Snake_HWY61data$tempRange[Snake_HWY61data$Temp < 68] <- "Cold"
+  Snake_HWY61data$tempRange[Snake_HWY61data$Temp >= 77] <- "Warm"
+  Snake_HWY61data$tempRange <- factor(Snake_HWY61data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Snake_HWY61data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Snake River - Hwy 61") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Snake River - Upper
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Snake_Upperdata<- Monroe%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Snake_Upperdata$tempRange = "Cool"
+  Snake_Upperdata$tempRange[Snake_Upperdata$Temp < 68] <- "Cold"
+  Snake_Upperdata$tempRange[Snake_Upperdata$Temp >= 77] <- "Warm"
+  Snake_Upperdata$tempRange <- factor(Snake_Upperdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Snake_Upperdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Snake River - Upper") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Soldier Creek - Middle Branch
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Soldier_MiddleBranchdata<- Soldier_MiddleBranch%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Soldier_MiddleBranchdata$tempRange = "Cool"
+  Soldier_MiddleBranchdata$tempRange[Soldier_MiddleBranchdata$Temp < 68] <- "Cold"
+  Soldier_MiddleBranchdata$tempRange[Soldier_MiddleBranchdata$Temp >= 77] <- "Warm"
+  Soldier_MiddleBranchdata$tempRange <- factor(Soldier_MiddleBranchdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Soldier_MiddleBranchdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Soldier Creek - Middle Branch") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Sowbelly Creek
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Sowbellydata<- Sowbelly%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Sowbellydata$tempRange = "Cool"
+  Sowbellydata$tempRange[Sowbellydata$Temp < 68] <- "Cold"
+  Sowbellydata$tempRange[Sowbellydata$Temp >= 77] <- "Warm"
+  Sowbellydata$tempRange <- factor(Sowbellydata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Sowbellydata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Sowbelly Creek") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# West Ash Creek - USFS
+```{r, echo=FALSE, warning=FALSE}
+#get data
+WestAsh_USFSdata<- WestAsh_USFS%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  WestAsh_USFSdata$tempRange = "Cool"
+  WestAsh_USFSdata$tempRange[WestAsh_USFSdata$Temp < 68] <- "Cold"
+  WestAsh_USFSdata$tempRange[WestAsh_USFSdata$Temp >= 77] <- "Warm"
+  WestAsh_USFSdata$tempRange <- factor(WestAsh_USFSdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = WestAsh_USFSdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="West Ash Creek - USFS") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# White River - Andrews
+```{r, echo=FALSE, warning=FALSE}
+#get data
+White_Andrewsdata<- White_Andrews%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  White_Andrewsdata$tempRange = "Cool"
+  White_Andrewsdata$tempRange[White_Andrewsdata$Temp < 68] <- "Cold"
+  White_Andrewsdata$tempRange[White_Andrewsdata$Temp >= 77] <- "Warm"
+  White_Andrewsdata$tempRange <- factor(White_Andrewsdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = White_Andrewsdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="White River - Andrews") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# White River - East Fort Rob
+```{r, echo=FALSE, warning=FALSE}
+#get data
+White_EastFtRobdata<- White_EastFtRob%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  White_EastFtRobdata$tempRange = "Cool"
+  White_EastFtRobdata$tempRange[White_EastFtRobdata$Temp < 68] <- "Cold"
+  White_EastFtRobdata$tempRange[White_EastFtRobdata$Temp >= 77] <- "Warm"
+  White_EastFtRobdata$tempRange <- factor(White_EastFtRobdata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = White_EastFtRobdata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="White River - East Fort Rob") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# White River = Golf Course 
+```{r, echo=FALSE, warning=FALSE}
+#get data
+White_GolfCoursedata<- White_GolfCourse%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  White_GolfCoursedata$tempRange = "Cool"
+  White_GolfCoursedata$tempRange[White_GolfCoursedata$Temp < 68] <- "Cold"
+  White_GolfCoursedata$tempRange[White_GolfCoursedata$Temp >= 77] <- "Warm"
+  White_GolfCoursedata$tempRange <- factor(White_GolfCoursedata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = White_GolfCoursedata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="White River - Golf Course") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# White River - Swinging Bridge
+```{r, echo=FALSE, warning=FALSE}
+#get data
+White_SwingingBridgedata<- White_SwingingBridge%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  White_SwingingBridgedata$tempRange = "Cool"
+  White_SwingingBridgedata$tempRange[White_SwingingBridgedata$Temp < 68] <- "Cold"
+  White_SwingingBridgedata$tempRange[White_SwingingBridgedata$Temp >= 77] <- "Warm"
+  White_SwingingBridgedata$tempRange <- factor(White_SwingingBridgedata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = White_SwingingBridgedata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="White River - Swinging Bridge") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# White Clay Creek
+```{r, echo=FALSE, warning=FALSE}
+#get data
+WhiteClaydata<- WhiteClay%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  WhiteClaydata$tempRange = "Cool"
+  WhiteClaydata$tempRange[WhiteClaydata$Temp < 68] <- "Cold"
+  WhiteClaydata$tempRange[WhiteClaydata$Temp >= 77] <- "Warm"
+  WhiteClaydata$tempRange <- factor(WhiteClaydata$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = WhiteClaydata) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="White Clay Creek") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Willow Creek - Site 1
+```{r, echo=FALSE, warning=FALSE}
+#get data
+Willow_Site1data<- Willow_Site1%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  Willow_Site1data$tempRange = "Cool"
+  Willow_Site1data$tempRange[Willow_Site1data$Temp < 68] <- "Cold"
+  Willow_Site1data$tempRange[Willow_Site1data$Temp >= 77] <- "Warm"
+  Willow_Site1data$tempRange <- factor(Willow_Site1data$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = Willow_Site1data) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Willow Creek - Site 1") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(10,100)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```

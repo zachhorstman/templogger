@@ -1,0 +1,537 @@
+---
+title: "Temperature Loggers, S.O.P. for uploading data and examples of analayis using R"
+author: "ZachHorstman"
+date: "1/12/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# An Introduction to Temperature Loggers in Nebraska.
+
+  Temperature has been described as the abiotic master factor when it comes to fishes (See Fry 1971, Brett 1971) but it is also immensly important when talking about anything aquatic. Temperature, along with flow, are primary driving factors in stream ecosystems and therefore should be of preeminant import and its relative ease of capture in the field. 
+
+  Temperature loggers have been distributed throughout many of Nebraska's sensitive streams for continued monitoring. This process began in the summer of 2015. Floods and the issue of where to place loggers so that they remain underwater year round has led to occasional breaks in our monitoring.  Some streams have multiple sites, therefore naming conventions of the HOBOware placed in a certain reach is critical. Some new sites have been added over the years while others have been discontinued. It seems to us that it is good practice to revisit sites two times a year, if possible, once in the summer and once in the winter. Battery life on each logger is one year and four months when set to record data every 15 minutes.
+
+  Our hope is to begin to understand which streams provide suitable abiotic conditions for certain species living within them. We also hope to determine the impacts of climate change on our native stream fishes.  One question we would like to begin to understand is whether trout populations are exposed to critical thermal maximum over an extended number of days that may begin to effect the growth and survival. 
+
+# Consolidating data at each site.
+
+  Each site has multiple HOBOware files associated with it that have been collected over the years. Some may only have one and been discontinued. Using the HOBOware software it is possible to combine all these data points and export as an EXCEL file. I have consolidated all files from 2015-2020.
+  
+  To merge HOBOware files, open a file and plot the data (exclude "coupler detached," "coupler attached," "stopped," and "end of file"). Click on "File," then "Merge datafile(s)...," select all files associated with that stream/site and click "open". Plot the data excluding "couler detached," "coupler attached," "stopped," and "end of file" options by selecting the option "none". Select "Plot" on the lower right of the screen. This should plot all the combined data on a single continuous graph which can then be exported to EXCEL. Export the EXCEL File and save to W:/Fisheries/Rivers and Streams Program/Temp Loggers/Consolidated TempLogger Files. My naming convention for the consolidated EXCEL file includes waterbody_sitename (e.g., Bone_Site1).
+  
+  Save the consolidated HOBOware project to W:/Fisheries/Rivers and Streams Program/Temp Loggers/HOBOware Files/Consolidated (by site) HOBOware Files. My naming convention for the project include the waterbody_sitename_1styeardatacollected_mostcurrentyeardatacollected (e.g., Bone_Site1_15_17).
+
+  A note on issues in consolidating the data: If there is any overlap in time from when one logger is pulled and another is set (e.g., old logger ends on 08/01/17 12:00:00 AM and new logger begins on 08/01/17 11:00:00 AM) there will be extra steps involved in consolidating the data. You will have to change the "Merge with" option to "No Series" before plotting. This will create additional "Temp F" columns that will need to be cleaned up after exporting into EXCEL. In the EXCEL file, Simply delete one of the overlapping temperature values and condense the multiple "Temp F" columns into a single column.
+
+# Edit the Excel file
+
+  Column headers will then need to be edited in EXCEL. Open the file. Two columns should appear if there was no overlap in logger times collecting data. A Date Time column and a Temp F column. If multiple Temp F Columns exist, delete cells in the columns to get it into a single Temp F column. Change the column headers to "DateTime" and "Temp." Then add columns "Waterbody" and "Site." Enter the waterbody code associated with creek name (can be found in Hurley's Access waterbody codes). For example, Bone Creek waterbody code is 9457. Some waterbody names will have multiple codes associated with them. Keep an eye on the county you are in. Enter the associated site name of the logger (e.g., Site 1 or WMA). Double click the copy down option in excel so that all rows have the waterbody and site information.
+  
+# Link the Excel file to Access master data
+
+  The EXCEL file can then be uploaded into the TemperatureLogger Access database (path: W:/Fisheries/Rivers and Streams Program/Temp Loggers). Open the database, all previous sites should be in linked tables. To add a new table, click "External Data" and then "Excel." Browse to the File name you created for the new temperature logger site (W:/Fisheries/Rivers and Streams Program/Temp Loggers/Consolidated TempLogger/...) and select it, the path should be visible, select the "Link to the data source by creating a linked table" option. Hit "Okay." MAke sure the "First Row Contains Column Headings" is checked and that there are 4 columns (DateTime, Temp, Waterbody, and Site), hit "Next." Enter table name, waterbody_site (e.g., Bone_Site1). Hit "Finish." The EXCEL table is now linked. IT IS VERY IMPORTANT TO UNDERSTAND THAT ANYTHING EVER CHANGED IN THE EXCEL FILE ITSELF WILL AUTOMATICALLY CHANGE WITHIN THE ACCESS LINKED TABLE. However, changing things in access (Querying, etc.) will not effect the Excel table. What is useful about this function is that as new data comes in we can add it to the excel file and it will automatically update the access file linked tables.
+
+# Adding new data in the future. 
+
+  I have saved all the previously condensed HOBOware files into a new project file which should have 2015 to 2020 data saved (path: W:/Fisheries/Rivers and Streams Program/Temp Loggers/HOBOware Files/Consolidated (by site) Hoboware Files). When adding new data, open these projects and add the new data by following the same merge steps as above. You may then overwrite the .hproj for each site with the most updated consolidated file.
+  
+Add the new chunk of Excel file data to the previously consolidated file. This will automatically update the Access tables since they are linked.
+
+  
+# Upload the data into R from Access
+```{r, echo=FALSE}
+library(RODBC)
+library(tidyverse)
+
+con <- odbcDriverConnect("Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=W:/Fisheries/Rivers and Streams Program/Temp Loggers/TemperatureLoggers.accdb")
+
+#if adding a new site, simply copy and paste a line here and add the new line of code here.
+# This chunk will take a minute to run all the lines of code...That's a lot of data.
+
+sqlFetch(con, '9Mile_Lower') -> NineMileLower
+sqlFetch(con, '9Mile_OFW') -> NineMileOFW
+sqlFetch(con, '9Mile_WMA') -> NineMileWMA
+sqlFetch(con, 'AID') -> AID
+sqlFetch(con, 'Bone_Site1') -> Bone_Site1
+sqlFetch(con, 'Bone_Site2') -> Bone_Site2
+sqlFetch(con, 'Bone_Site3') -> Bone_Site3
+sqlFetch(con, 'Bone_Site4') -> Bone_Site4
+sqlFetch(con, 'Bordeaux_Cliffs') -> Bordeaux_Cliffs
+sqlFetch(con, 'Bordeaux_North') -> Bordeaux_North
+sqlFetch(con, 'Cedar_Site1') -> Cedar_Site1
+sqlFetch(con, 'Chadron_AboveDischarge') -> Chadron_AboveDischarge
+sqlFetch(con, 'Chadron_BelowDischarge') -> Chadron_BelowDischarge
+sqlFetch(con, 'Chadron_CCRHeadwaters') -> Chadron_CCRHeadwaters
+sqlFetch(con, 'Chadron_ParkEntrance') -> Chadron_ParkEntrance
+sqlFetch(con, 'Chadron_ParkExit') -> Chadron_ParkExit
+sqlFetch(con, 'Deadmans') -> Deadmans
+sqlFetch(con, 'Dismal_Dunning') -> Dismal_Dunning
+sqlFetch(con, 'Dry_Site1') -> Dry_Site1
+sqlFetch(con, 'DrySpottedtail_Hanson') -> DrySpottedtail_Hanson
+sqlFetch(con, 'DrySpottedtail_Steffl') -> DrySpottedtail_Steffl
+sqlFetch(con, 'EastAsh_USFS') -> EastAsh_USFS
+sqlFetch(con, 'Evergreen_Site1') -> Evergreen_Site1
+sqlFetch(con, 'Gordon_Site1') -> Gordon_Site1
+sqlFetch(con, 'Gordon_Site2') -> Gordon_Site2
+sqlFetch(con, 'Gordon_Site3') -> Gordon_Site3
+sqlFetch(con, 'Gordon_Site4') -> Gordon_Site4
+sqlFetch(con, 'Holt_WMA') -> Holt_WMA
+sqlFetch(con, 'Larabee_Dolezal') -> Larabee_Dolezal
+sqlFetch(con, 'Larabee_Forney') -> Larabee_Forney
+sqlFetch(con, 'Larabee_School') -> Larabee_School
+sqlFetch(con, 'LongPine_Site2') -> LongPine_Site2
+sqlFetch(con, 'LongPine_Site3') -> LongPine_Site3
+sqlFetch(con, 'LongPine_Site4') -> LongPine_Site4
+sqlFetch(con, 'LongPine_Site6') -> LongPine_Site6
+sqlFetch(con, 'MiddleLoup_MiddleBranch') -> MiddleLoup_MiddleBranch
+sqlFetch(con, 'MiddleLoup_NorthBranch') -> MiddleLoup_NorthBranch
+sqlFetch(con, 'MiddleLoup_SouthBranch') -> MiddleLoup_SouthBranch
+sqlFetch(con, 'Minnechaduza_Site1') -> Minnechaduza_Site1
+sqlFetch(con, 'Minnechaduza_Site2') -> Minnechaduza_Site2
+sqlFetch(con, 'Minnechaduza_Site3') -> Minnechaduza_Site3
+sqlFetch(con, 'Monroe') -> Monroe
+sqlFetch(con, 'Niobrara_HWY71') -> Niobrara_HWY71
+sqlFetch(con, 'Niobrara_HWY385') -> Niobrara_HWY385
+sqlFetch(con, 'Niobrara_Schoolhouse') -> Niobrara_Schoolhouse
+sqlFetch(con, 'Pine_Middle') -> Pine_Middle
+sqlFetch(con, 'Pine_North') -> Pine_North
+sqlFetch(con, 'Pine_South') -> Pine_South
+sqlFetch(con, 'Plum_Site1') -> Plum_Site1
+sqlFetch(con, 'Plum_Site2') -> Plum_Site2
+sqlFetch(con, 'Plum_Site3') -> Plum_Site3
+sqlFetch(con, 'Plum_Site4') -> Plum_Site4
+sqlFetch(con, 'Plum_Site5') -> Plum_Site5
+sqlFetch(con, 'Plum_Site6') -> Plum_Site6
+sqlFetch(con, 'Plum_Site7') -> Plum_Site7
+sqlFetch(con, 'Plum_Site8') -> Plum_Site8
+sqlFetch(con, 'Plum_Site9') -> Plum_Site9
+sqlFetch(con, 'SandDraw_Site1') -> SandDraw_Site1
+sqlFetch(con, 'SandDraw_Site2') -> SandDraw_Site2
+sqlFetch(con, 'Schlagel_newWMA') -> Schlagel_newWMA
+sqlFetch(con, 'Schlagel_Swanson') -> Schlagel_Swanson
+sqlFetch(con, 'Schlagel_Vanderplow') -> Schlagel_Vanderplow
+sqlFetch(con, 'Schlagel_WMA') -> Schlagel_WMA
+sqlFetch(con, 'Sheep_Site1') -> Sheep_Site1
+sqlFetch(con, 'Sheep_Site2') -> Sheep_Site2
+sqlFetch(con, 'Snake_Adamson') -> Snake_Adamson
+sqlFetch(con, 'Snake_HWY61') -> Snake_HWY61
+sqlFetch(con, 'Snake_Upper') -> Snake_Upper
+sqlFetch(con, 'Soldier_MiddleBranch') -> Soldier_MiddleBranch
+sqlFetch(con, 'Sowbelly') -> Sowbelly
+sqlFetch(con, 'WestAsh_USFS') -> WestAsh_USFS
+sqlFetch(con, 'White_Andrews') -> White_Andrews
+sqlFetch(con, 'White_EastFtRob') -> White_EastFtRob
+sqlFetch(con, 'White_GolfCourse') -> White_GolfCourse
+sqlFetch(con, 'White_SwingingBridge') -> White_SwingingBridge
+sqlFetch(con, 'WhiteClay') -> WhiteClay 
+sqlFetch(con, 'Willow_Site1') -> Willow_Site1
+
+
+odbcClose(con)
+```
+
+# Graphing a specfic site
+## Just go through the code and change the name of the dataframe you are interested in to examine a single site
+```{r, echo=FALSE}
+#get data
+data1 <- Plum_Site3%>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  ## I have classified streams into three different categories based on the Cool Water Streams Management Plan by NGPC (2016-2020).
+  ### cold =<68F, cool= 68.1-76.9, warm >=77
+  data1$tempRange = "Cool"
+  data1$tempRange[data1$Temp < 68] <- "Cold"
+  data1$tempRange[data1$Temp >= 77] <- "Warm"
+  data1$tempRange <- factor(data1$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+ggplot(data = data1) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Plum Creek - Site 3") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(0,85)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+# Looking at multiple sites together using ggarrange()
+## First plot as manny graphs as you want, more than 4 sites may get tight. Then use ggarange function to plot them all together
+```{r, echo=FALSE}
+# Select site 1 
+data2 <- Minnechaduza_Site1 %>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  data2$tempRange = "Cool"
+  data2$tempRange[data2$Temp < 68] <- "Cold"
+  data2$tempRange[data2$Temp >= 77] <- "Warm"
+  data2$tempRange <- factor(data2$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+plota <- ggplot(data = data2) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Minnechaduza - Site 1") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(0,85)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue","darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+
+plota # individual graph of site 1
+
+
+# Site 2____________________________________________________________________________________________________________________________________________
+  #get data
+data3 <- Minnechaduza_Site2 %>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  data3$tempRange = "Cool"
+  data3$tempRange[data3$Temp < 68] <- "Cold"
+  data3$tempRange[data3$Temp >= 77] <- "Warm"
+  data3$tempRange <- factor(data3$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+plotb <- ggplot(data = data3) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Minnechaduza Site 2") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(0,85)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+
+plotb #individual graph of site 2
+
+
+# Site 3
+# __________________________________________________________________________________________________________________________________________________
+
+  #get data
+data4 <- Minnechaduza_Site3 %>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  data4$tempRange = "Cool"
+  data4$tempRange[data4$Temp < 68] <- "Cold"
+  data4$tempRange[data4$Temp >= 77] <- "Warm"
+  data4$tempRange <- factor(data4$tempRange, levels=c("Cold", "Cool", "Warm"))
+  
+  #create plot
+plotc <- ggplot(data = data4) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Minnechaduza Site 3") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(0,85)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("navy", "cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+
+plotc #individual graph of site 3
+
+
+# you can continue adding as many sites as you want...
+# __________________________________________________________________________________________________________________________________________________
+# Pull them all together using ggarange()
+library(ggpubr)
+
+figure <- ggarrange(plota, plotb, plotc,
+                    labels = c("", "", ""),
+                    ncol = 2, nrow = 2)
+figure #may need to hit zoom to view plots
+
+```
+
+
+## Another application looking at temps might be to examine temperatures in which a species may thrive or struggle depending on the temperature inputs
+## In Example 1, we examine the temperature in which Rainbow trout adults may struggle due to warming temperatures ceasing consumption. This value is established off of D. Desluaries Fish Bioengetics 4.0 R program
+### CTM Critical thermal maximum for consumption = 22.5 C or 72.5 F
+## In this example, Adult rainbow trout may experience days in June through September in which hourly water temperatures may reach CTM for feeding but evening temperatures seem to provide some temperature reliefs to this species in Plum Creek at Site 3.
+```{r, echo=FALSE}
+#get data
+data5 <- Plum_Site3 %>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  data5$tempRange = "OKAY"
+  data5$tempRange[data5$Temp >= 72] <- "CTM"
+  data5$tempRange <- factor(data5$tempRange, levels=c("OKAY", "CTM"))
+  
+  #create plot
+ggplot(data = data5) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps w/ CTM of Rainbow Trout (72F)", subtitle ="Plum - Site 3") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(0,85)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+
+## In Example 2, we examine the temperature in which Brown trout adults experience optimal temperatures for growth and activity. This value is established off of Melissa Muradian's article https://henrysfork.org/average-temperature-requirements-rainbow-and-brown-trout
+### The optimum thermal range for growth and activity of brown trout is between = 11C (51.8F) and 19C (66.2F).
+## In this example we see the months that brown trout survial may be optimized. This does not mean to say that brown trout can't survive outside these ranges. 
+```{r, echo=FALSE}
+# Get data
+data6 <- Plum_Site3 %>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+#create temp range
+  #this function assigns color values to the temps
+  data6$tempRange = "Optimum Thermal Range"
+  data6$tempRange[data6$Temp <= 51.8] <- "Meh" #lower optimal thermal limit
+  data6$tempRange[data6$Temp >= 66.2] <- "Meh" #upper optimal thermal limit
+  data6$tempRange <- factor(data6$tempRange, levels=c("Meh", "Optimum Thermal Range"))
+  
+  #create plot
+ggplot(data = data6) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps", subtitle ="Plum - Site 3") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(0,85)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("darkred", "cadetblue")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+## Zooming in on certain time frames may be useful in sharing data.
+## In this example we zoom in on Plum Creek Site 3 to examine how long Rainbow Trouts adults might be exposed to Critical Thermal maximums that may begin to effect their survival during the months of june to september in 2016 and 2017.
+## In 2016 we find that there were roughly 4 consecutive days from July 19 to July 22 where almost all data points were above CTM. Most other days temperature is fairly evenly split above and below the CTM limit during a 24hr period.
+```{r, echo=FALSE}
+dataZOOM <- Plum_Site3 %>% # change name to whatever waterbody_site you'd like to examine
+    mutate(DateTime = as.Date(DateTime, origin = "1960-10-01")) %>%
+    mutate(year = format(DateTime, "%Y")) %>%
+    mutate(jul = format(DateTime,  "%j"))# new_date = julian2date(julian_date)) 
+
+with(dataZOOM, dataZOOM[(DateTime >= "2016-06-01" & DateTime <= "2016-09-01"), ]) -> dataZOOM16 # zooming in to Jun 2016- Sept 2016, subset the data
+
+#create temp range
+  #this function assigns color values to the temps
+  dataZOOM16$tempRange = "OKAY"
+  dataZOOM16$tempRange[dataZOOM16$Temp >= 72] <- "CTM"
+  dataZOOM16$tempRange <- factor(dataZOOM16$tempRange, levels=c("OKAY", "CTM"))
+  
+  #create plot
+ggplot(data = dataZOOM16) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps w/ CTM of Rainbow Trout (72F)- Summer 2016", subtitle ="Plum - Site 3") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(55,85)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+## In 2017, we find that summer temps peak around the same time as the previous year, with the warmest days mid to late july.
+```{r, echo=FALSE}
+with(dataZOOM, dataZOOM[(DateTime >= "2017-06-01" & DateTime <= "2017-09-01"), ]) -> dataZOOM17 # zooming in to Jun 2017- Sept 2017, subset the data
+#create temp range
+  #this function assigns color values to the temps
+  dataZOOM17$tempRange = "OKAY"
+  dataZOOM17$tempRange[dataZOOM17$Temp >= 72] <- "CTM"
+  dataZOOM17$tempRange <- factor(dataZOOM17$tempRange, levels=c("OKAY", "CTM"))
+  
+  #create plot
+ggplot(data = dataZOOM17) +
+    geom_point(aes(x = DateTime, y = Temp, color = tempRange), size = .5) +
+    geom_smooth(aes(x = DateTime, y = Temp), color = "green", size = 1) +
+    labs(x = "", y = "Water Temperature (degrees F)", title = "Hourly Water Temps w/ CTM of Rainbow Trout (72F) - Summer 2017", subtitle ="Plum - Site 3") + # !!! don't forget to change graph title!!!
+    scale_y_continuous(limits = c(55,85)) +
+    scale_x_date(date_breaks = "1 month", date_minor_breaks = "1 month", date_labels = "%b-%Y") +
+    scale_color_manual(values = c("cadetblue", "darkred")) +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major = element_line(color = "gray70"),
+          panel.background = element_rect(fill = "gray90"),
+          title = element_text(hjust = 0.5,
+                               color = "black"),
+          strip.background = element_rect(fill = "white"),
+          strip.text = element_text(color = "gray20"),
+          axis.text = element_text(color = "black"),
+          legend.title = element_blank())
+```
+
+##Example 3
+
+###Here we will examine Bordeaux North and Cliffs Data by first combining into one dataset 'Bordeaux_All. 
+
+```{r}
+library(tidyverse)
+library(cowplot)
+
+rbind(Bordeaux_Cliffs, Bordeaux_North) -> Bordeaux_All #combine Bordeaux Cliffs and North into All
+
+Bordeaux_All <- tidyr::separate(Bordeaux_All, 'DateTime',  #separate DateTime 
+                                    into = c('Date', 'Time'), #into Date and Time
+                                    sep = ' ') #by space or ' '
+
+head(Bordeaux_All) #look at data
+
+Bordeaux_All %>% 
+  tidyr::separate('Date', 
+                  into = c('year', 'month', 'day'),
+                  sep = '-',
+                  remove = FALSE) -> Bordeaux_Full  #separate Date into month, day, year columns
+
+head(Bordeaux_Full)
+```
+
+###Next we'll calculate daily temperature means for each site. 
+
+```{r}
+
+Bordeaux_Full %>% 
+  group_by(year, month, day, Site, Date) %>% 
+  summarise(meanTemp = mean(Temp)) -> Bordeaux_Full_Mean #
+
+```
+
+##Figure of Daily means for Temperature
+
+###Next we can look at the daily mean temperature for each site separately using ggplot (specifically geom_smooth() function to get a line with a 95% CI).
+
+```{r}
+
+meanplot <- ggplot(Bordeaux_Full_Mean, 
+                   aes(x=as.Date(Date, format= "%Y - %m - %d"), y=meanTemp))+
+            geom_smooth(aes(colour=Site))+
+            theme_bw()+
+            labs(title= "Daily temperature means", y="Daily mean temperature (°C) with 95% CI", x="Date")
+
+meanplot
+
+Bordeaux_Full_Mean %>% 
+  filter(Date >= "2016-05-27") %>% 
+  filter(Date <= "2017-11-15") -> Bd
+
+BdPlot <- ggplot(Bd, 
+            aes(x=as.Date(Date, format= "%Y - %m - %d"), y=meanTemp))+
+            geom_smooth(aes(colour=Site))+
+            theme_bw()+
+            labs(title= "Daily temperature means", 
+                 y="Daily mean temperature (°C) with 95% CI", 
+                 x="Date")
+
+BdPlot
+```
+
+###Mean daily temperatures seem relatively similiar for Cliffs and North site. Temperature differences are most pronounced in 2017. 
+
+
+##Calculate monthly temperature means
+
+```{r}
+
+Bordeaux_Full %>% 
+  group_by(year, month, Site) %>% 
+  summarise(meanTemp = mean(Temp)) -> Bordeaux_Month_Mean #
+
+nrow(Bordeaux_Month_Mean)
+
+```
+
+###Number of rows = 74 
+
+##Test for significance between zones, months, and Sites
+
+###Now we are going to test the significant differences between sites using the anova [aov() function]
+
+```{r}
+Bordeaux_Month_Mean_aov <- aov(meanTemp~Site + as.factor(month), 
+                               data = Bordeaux_Month_Mean)
+
+summary(Bordeaux_Month_Mean_aov)
+
+
+Bordeaux_Full_Mean_aov <- aov(meanTemp~Site + as.factor(day), 
+                              data = Bordeaux_Full_Mean)
+
+summary(Bordeaux_Full_Mean_aov)
+```
+
+###There is a significant effect of month and site on daily temperature

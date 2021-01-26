@@ -1,0 +1,1650 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_202" class="java.beans.XMLDecoder">
+ <object class="Appleseed.HOBOViewX">
+  <void property="TFont">
+   <string>Dialog.plain</string>
+  </void>
+  <void property="TFontSz">
+   <int>12</int>
+  </void>
+  <void property="axes">
+   <array class="Graphing.LGAxis" length="7">
+    <void index="0">
+     <object class="Graphing.LGAbsTimeAxis" id="LGAbsTimeAxis0">
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMinReal</string>
+       <void method="set">
+        <object idref="LGAbsTimeAxis0"/>
+        <double>1.5882912E12</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMaxReal</string>
+       <void method="set">
+        <object idref="LGAbsTimeAxis0"/>
+        <double>1.6145568E12</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mGridFlag</string>
+       <void method="set">
+        <object idref="LGAbsTimeAxis0"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGBorderPane" method="getField">
+       <string>mLocation</string>
+       <void method="set">
+        <object idref="LGAbsTimeAxis0"/>
+        <int>2</int>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mCustomFont</string>
+       <void method="set">
+        <object idref="LGAbsTimeAxis0"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void property="MPaintSave">
+       <object class="java.awt.Color" id="Color0">
+        <int>0</int>
+        <int>0</int>
+        <int>0</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="MStrokeSave">
+       <object class="java.awt.BasicStroke" id="BasicStroke0">
+        <float>1.0</float>
+        <int>2</int>
+        <int>0</int>
+        <float>10.0</float>
+        <null/>
+        <float>0.0</float>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void index="1">
+     <object class="Graphing.LGValueAxis" id="LGValueAxis0">
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMinReal</string>
+       <void method="set">
+        <object idref="LGValueAxis0"/>
+        <double>30.0</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMaxReal</string>
+       <void method="set">
+        <object idref="LGValueAxis0"/>
+        <double>75.0</double>
+       </void>
+      </void>
+      <void class="Graphing.LGBorderPane" method="getField">
+       <string>mLocation</string>
+       <void method="set">
+        <object idref="LGValueAxis0"/>
+        <int>1</int>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mCustomFont</string>
+       <void method="set">
+        <object idref="LGValueAxis0"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mName</string>
+       <void method="set">
+        <object idref="LGValueAxis0"/>
+        <string>°F</string>
+       </void>
+      </void>
+      <void property="MPaintSave">
+       <object idref="Color0"/>
+      </void>
+      <void property="MStrokeSave">
+       <object idref="BasicStroke0"/>
+      </void>
+     </object>
+    </void>
+    <void index="2">
+     <object class="Graphing.LGValueAxis" id="LGValueAxis1">
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMinReal</string>
+       <void method="set">
+        <object idref="LGValueAxis1"/>
+        <double>-0.1</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMaxReal</string>
+       <void method="set">
+        <object idref="LGValueAxis1"/>
+        <double>1.1</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mLocked</string>
+       <void method="set">
+        <object idref="LGValueAxis1"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mCustomTicksFlag</string>
+       <void method="set">
+        <object idref="LGValueAxis1"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGBorderPane" method="getField">
+       <string>mLocation</string>
+       <void method="set">
+        <object idref="LGValueAxis1"/>
+        <int>3</int>
+       </void>
+      </void>
+      <void class="Graphing.LGBorderPane" method="getField">
+       <string>mHidden</string>
+       <void method="set">
+        <object idref="LGValueAxis1"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mCustomFont</string>
+       <void method="set">
+        <object idref="LGValueAxis1"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mName</string>
+       <void method="set">
+        <object idref="LGValueAxis1"/>
+        <string>Coupler Detached</string>
+       </void>
+      </void>
+      <void property="paneColor">
+       <object class="java.awt.Color">
+        <int>0</int>
+        <int>0</int>
+        <int>255</int>
+        <int>255</int>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void index="3">
+     <object class="Graphing.LGValueAxis" id="LGValueAxis2">
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMinReal</string>
+       <void method="set">
+        <object idref="LGValueAxis2"/>
+        <double>-0.1</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMaxReal</string>
+       <void method="set">
+        <object idref="LGValueAxis2"/>
+        <double>1.1</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mLocked</string>
+       <void method="set">
+        <object idref="LGValueAxis2"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mCustomTicksFlag</string>
+       <void method="set">
+        <object idref="LGValueAxis2"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGBorderPane" method="getField">
+       <string>mLocation</string>
+       <void method="set">
+        <object idref="LGValueAxis2"/>
+        <int>1</int>
+       </void>
+      </void>
+      <void class="Graphing.LGBorderPane" method="getField">
+       <string>mHidden</string>
+       <void method="set">
+        <object idref="LGValueAxis2"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mCustomFont</string>
+       <void method="set">
+        <object idref="LGValueAxis2"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mName</string>
+       <void method="set">
+        <object idref="LGValueAxis2"/>
+        <string>Coupler Attached</string>
+       </void>
+      </void>
+      <void property="paneColor">
+       <object class="java.awt.Color">
+        <int>0</int>
+        <int>0</int>
+        <int>255</int>
+        <int>255</int>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void index="4">
+     <object class="Graphing.LGValueAxis" id="LGValueAxis3">
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMinReal</string>
+       <void method="set">
+        <object idref="LGValueAxis3"/>
+        <double>-0.1</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMaxReal</string>
+       <void method="set">
+        <object idref="LGValueAxis3"/>
+        <double>1.1</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mLocked</string>
+       <void method="set">
+        <object idref="LGValueAxis3"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mCustomTicksFlag</string>
+       <void method="set">
+        <object idref="LGValueAxis3"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGBorderPane" method="getField">
+       <string>mLocation</string>
+       <void method="set">
+        <object idref="LGValueAxis3"/>
+        <int>3</int>
+       </void>
+      </void>
+      <void class="Graphing.LGBorderPane" method="getField">
+       <string>mHidden</string>
+       <void method="set">
+        <object idref="LGValueAxis3"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mCustomFont</string>
+       <void method="set">
+        <object idref="LGValueAxis3"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mName</string>
+       <void method="set">
+        <object idref="LGValueAxis3"/>
+        <string>Host Connected</string>
+       </void>
+      </void>
+      <void property="paneColor">
+       <object class="java.awt.Color">
+        <int>0</int>
+        <int>0</int>
+        <int>255</int>
+        <int>255</int>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void index="5">
+     <object class="Graphing.LGValueAxis" id="LGValueAxis4">
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMinReal</string>
+       <void method="set">
+        <object idref="LGValueAxis4"/>
+        <double>-0.1</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMaxReal</string>
+       <void method="set">
+        <object idref="LGValueAxis4"/>
+        <double>1.1</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mLocked</string>
+       <void method="set">
+        <object idref="LGValueAxis4"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mCustomTicksFlag</string>
+       <void method="set">
+        <object idref="LGValueAxis4"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGBorderPane" method="getField">
+       <string>mLocation</string>
+       <void method="set">
+        <object idref="LGValueAxis4"/>
+        <int>1</int>
+       </void>
+      </void>
+      <void class="Graphing.LGBorderPane" method="getField">
+       <string>mHidden</string>
+       <void method="set">
+        <object idref="LGValueAxis4"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mCustomFont</string>
+       <void method="set">
+        <object idref="LGValueAxis4"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mName</string>
+       <void method="set">
+        <object idref="LGValueAxis4"/>
+        <string>Stopped</string>
+       </void>
+      </void>
+      <void property="paneColor">
+       <object class="java.awt.Color">
+        <int>0</int>
+        <int>0</int>
+        <int>255</int>
+        <int>255</int>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void index="6">
+     <object class="Graphing.LGValueAxis" id="LGValueAxis5">
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMinReal</string>
+       <void method="set">
+        <object idref="LGValueAxis5"/>
+        <double>-0.1</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mMaxReal</string>
+       <void method="set">
+        <object idref="LGValueAxis5"/>
+        <double>1.1</double>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mLocked</string>
+       <void method="set">
+        <object idref="LGValueAxis5"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGAxis" method="getField">
+       <string>mCustomTicksFlag</string>
+       <void method="set">
+        <object idref="LGValueAxis5"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGBorderPane" method="getField">
+       <string>mLocation</string>
+       <void method="set">
+        <object idref="LGValueAxis5"/>
+        <int>3</int>
+       </void>
+      </void>
+      <void class="Graphing.LGBorderPane" method="getField">
+       <string>mHidden</string>
+       <void method="set">
+        <object idref="LGValueAxis5"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mCustomFont</string>
+       <void method="set">
+        <object idref="LGValueAxis5"/>
+        <boolean>true</boolean>
+       </void>
+      </void>
+      <void class="Graphing.LGPane" method="getField">
+       <string>mName</string>
+       <void method="set">
+        <object idref="LGValueAxis5"/>
+        <string>End Of File</string>
+       </void>
+      </void>
+      <void property="paneColor">
+       <object class="java.awt.Color">
+        <int>0</int>
+        <int>0</int>
+        <int>255</int>
+        <int>255</int>
+       </object>
+      </void>
+     </object>
+    </void>
+   </array>
+  </void>
+  <void property="labelArray">
+   <array class="Graphing.LGLabel" length="0"/>
+  </void>
+  <void property="legend">
+   <object class="Graphing.LGLegend" id="LGLegend0">
+    <void class="Graphing.LGPane" method="getField">
+     <string>mCustomFont</string>
+     <void method="set">
+      <object idref="LGLegend0"/>
+      <boolean>true</boolean>
+     </void>
+    </void>
+    <void property="MPaintSave">
+     <object idref="Color0"/>
+    </void>
+    <void property="MStrokeSave">
+     <object idref="BasicStroke0"/>
+    </void>
+   </object>
+  </void>
+  <void property="series">
+   <array class="Appleseed.HOBOViewX$HOBOSeriesX" length="6">
+    <void index="0">
+     <object class="Appleseed.HOBOViewX$HOBOSeriesX" id="HOBOViewX$HOBOSeriesX0">
+      <void class="Appleseed.HOBOViewX$HOBOSeriesX" method="getField">
+       <string>m_ChannelName</string>
+       <void method="set">
+        <object idref="HOBOViewX$HOBOSeriesX0"/>
+        <string></string>
+       </void>
+      </void>
+      <void property="FWVer">
+       <string>1.06</string>
+      </void>
+      <void property="GMTMinsOrig">
+       <int>-300</int>
+      </void>
+      <void property="GMTMinsRaw">
+       <int>-360</int>
+      </void>
+      <void property="ID">
+       <int>1</int>
+      </void>
+      <void property="LDesc">
+       <string>Temperature</string>
+      </void>
+      <void property="OMName">
+       <string>OLServices.measurement.temperature.OMTemp_Thermistor</string>
+      </void>
+      <void property="SDesc">
+       <string>Temp</string>
+      </void>
+      <void property="SN">
+       <string>10739559</string>
+      </void>
+      <void property="YAxis">
+       <int>1</int>
+      </void>
+      <void property="avg">
+       <double>50.43</double>
+      </void>
+      <void property="battLnch">
+       <float>3.43</float>
+      </void>
+      <void property="chanSerial">
+       <string>10739559</string>
+      </void>
+      <void property="channelDisplayMode">
+       <object class="java.lang.Enum" id="OPlotManager$ChannelDisplayModes0" method="valueOf">
+        <class>Appleseed.OPlotManager$ChannelDisplayModes</class>
+        <string>LOGGER</string>
+       </object>
+      </void>
+      <void property="channelMax">
+       <double>158.0</double>
+      </void>
+      <void property="channelMin">
+       <double>-4.0</double>
+      </void>
+      <void property="data">
+       <string>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Mm8y/fdZj5XzTTP+mnPqsl69mkNBftDj+JfpVfCf/MB33AN/QdWfM/2nGRfD/9L+Zu/h26lfpZ+I3y/t8dTz2eX0rWZPfe3Q91PfSr2f3kX/p3+B/u57fkev8Xzvpf/xX9Jz7I/fgVwhR9AfunKe+Ez6e3L+GJhzPnyviougz0pfdp/WZ73Wz15zb/Rieh47jF3k/Oi1/CH0V3plkx832L7on278+QdPd3lz/nRf761Od7nyp6f6/n7yVMfTrz7V9aI/Pdn396STnT7OnVznu53sePTrJ9Z4eqLrJV9yotPDx453O/oPjvf9XX28670/e3xthx/veH3V8X7/33G8/+7U8bW+drz7VW47YNvHrY93uXe9413vf+9Wx+MXbnV79se2+r1sbXW5drutrnffZmvNF4+t3rSvJr3+WH//C46t9a9jq8/bR5AnH+v7ffSxtRw71vXzex3r+tMDxt/btu53rO/nGwb09/x/v2/3fufxnMYvHnpsta8uffDh4/1t3c84tvrwnhpzo18Y6+73sv78ofU+rr3V+fPNxr5b3ODu679vD/iiPTPqbQ87CBudPnKcZ9e/xud98nnST22t9Z+tzh+eutX9M8/d6vT9ywP6ne+7H5/9f8OnXxnvA3t8bMCG5u8en/u+B140ffMLjnf6u+PxNb4e73zv3gN2vrzGo0cc7/t/7Pr3Tz7e/WDPHhDetjrQnz++evE+Wb/yeJenrxn43enh+DrPacCGV787ILoAG37/8fHVfnjnJe+sYaOL9xyEzS54/0FYfT9hvsd6wFxv7if3lfvxHnyh868THb9veqJ/7wtPdLl7pzX/+KoTnW/e/eBnEL/p8aYB2/O3TnS58XUnOn19y4meJ/bd6+/9+IlOf88+sc6zOdHlw78/sb63E2t94USXjx870fnEdU6u9t0A1775yS6Pb3NyrR+c7M+/28mur58+2f0a9znZz+UB43M7n++qoe83+XH/8bsenx7P977ml/jysZ4mP255svP5G568uG772P/Z+993otuN7znR8fyPT6zv8cRFvt70iteMc3FOzq3xn6eM82zre9yJvr5HDrng3Bv/eOC4D/fTnrN78P7y/uFH4ze3H/cPf5p8vPnAq/bcG62fe8WJi3jX7arjFyG8bI//SE1HFX0knVT473nea33Wb59NP7jvibU+Os7dvbi/xq+vf7LL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</string>
+      </void>
+      <void property="depN">
+       <int>7</int>
+      </void>
+      <void property="derived">
+       <boolean>false</boolean>
+      </void>
+      <void property="devMem">
+       <int>65536</int>
+      </void>
+      <void property="fstSampleTime">
+       <double>1.5930072E12</double>
+      </void>
+      <void property="fstScaleRaw">
+       <double>NaN</double>
+      </void>
+      <void property="fstScaleReal">
+       <double>NaN</double>
+      </void>
+      <void property="hdrDate">
+       <double>1.432121226804E12</double>
+      </void>
+      <void property="interval">
+       <array class="double" length="1">
+        <void index="0">
+         <double>900.0</double>
+        </void>
+       </array>
+      </void>
+      <void property="launcherString">
+       <string>HOBOware -3.7.18_1016_1559_Windows</string>
+      </void>
+      <void property="lnchDesc">
+       <string>Monroe Creek</string>
+      </void>
+      <void property="lnchTime">
+       <double>1.593002549E12</double>
+      </void>
+      <void property="max">
+       <double>70.115</double>
+      </void>
+      <void property="min">
+       <double>32.542</double>
+      </void>
+      <void property="mnfc">
+       <string>Onset Computer Corporation</string>
+      </void>
+      <void property="prodID">
+       <string>HOBO U22-001 Water Temp</string>
+      </void>
+      <void property="real">
+       <boolean>true</boolean>
+      </void>
+      <void property="runtimeDescription">
+       <object class="java.lang.Enum" method="valueOf">
+        <class>OLServices.channel.OChannel$ERUNTIME_DESCRIPTION</class>
+        <string>ERUNTIME_DESC_UNDEFINED</string>
+       </object>
+      </void>
+      <void property="runtimeUnits">
+       <object class="java.lang.Enum" method="valueOf">
+        <class>OLServices.channel.OChannel$ERUNTIME_UNITS</class>
+        <string>ERUNTIME_UNIT_UNDEFINED</string>
+       </object>
+      </void>
+      <void property="samplesN">
+       <array class="int" length="1">
+        <void index="0">
+         <int>20154</int>
+        </void>
+       </array>
+      </void>
+      <void property="scdScaleRaw">
+       <double>NaN</double>
+      </void>
+      <void property="scdScaleReal">
+       <double>NaN</double>
+      </void>
+      <void property="series">
+       <object class="Graphing.LGSeries" id="LGSeries0">
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mAlarmHigh</string>
+         <void method="set">
+          <object idref="LGSeries0"/>
+          <double>32.0</double>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mAlarmLow</string>
+         <void method="set">
+          <object idref="LGSeries0"/>
+          <double>32.0</double>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mLinesFlag</string>
+         <void method="set">
+          <object idref="LGSeries0"/>
+          <boolean>true</boolean>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>m_ArrayUnitOptions</string>
+         <void method="set">
+          <object idref="LGSeries0"/>
+          <array class="java.lang.String" length="2">
+           <void index="0">
+            <string>°C</string>
+           </void>
+           <void index="1">
+            <string>°F</string>
+           </void>
+          </array>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>m_iCurrentUnitIndex</string>
+         <void method="set">
+          <object idref="LGSeries0"/>
+          <int>1</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mUnitName</string>
+         <void method="set">
+          <object idref="LGSeries0"/>
+          <string>°F</string>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>dataSetId</string>
+         <void method="set">
+          <object idref="LGSeries0"/>
+          <string>1568485634</string>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mCustomFont</string>
+         <void method="set">
+          <object idref="LGSeries0"/>
+          <boolean>true</boolean>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mName</string>
+         <void method="set">
+          <object idref="LGSeries0"/>
+          <string>Temp</string>
+         </void>
+        </void>
+        <void property="MPaintSave">
+         <object idref="Color0"/>
+        </void>
+        <void property="MStrokeSave">
+         <object idref="BasicStroke0"/>
+        </void>
+        <void property="startTimes">
+         <null/>
+        </void>
+       </object>
+      </void>
+      <void property="startLoggingDelay">
+       <double>4651.0</double>
+      </void>
+      <void property="stdDev">
+       <double>10.171517292355004</double>
+      </void>
+      <void property="timeZoneID">
+       <string>GMT-05:00</string>
+      </void>
+      <void property="useDerivedAndReal">
+       <boolean>true</boolean>
+      </void>
+      <void property="valPatt">
+       <string>#,##0.000;-#,##0.000</string>
+      </void>
+     </object>
+    </void>
+    <void index="1">
+     <object class="Appleseed.HOBOViewX$HOBOSeriesX">
+      <void property="FWVer">
+       <string>1.06</string>
+      </void>
+      <void property="GMTMinsOrig">
+       <int>-300</int>
+      </void>
+      <void property="GMTMinsRaw">
+       <int>-360</int>
+      </void>
+      <void property="LDesc">
+       <string>Coupler Detached</string>
+      </void>
+      <void property="SDesc">
+       <string>Coupler Detached</string>
+      </void>
+      <void property="SN">
+       <string>10739559</string>
+      </void>
+      <void property="YAxis">
+       <int>2</int>
+      </void>
+      <void property="battLnch">
+       <float>3.43</float>
+      </void>
+      <void property="channelDisplayMode">
+       <object idref="OPlotManager$ChannelDisplayModes0"/>
+      </void>
+      <void property="data">
+       <string>AABwDWoud0I=</string>
+      </void>
+      <void property="depN">
+       <int>7</int>
+      </void>
+      <void property="devMem">
+       <int>65536</int>
+      </void>
+      <void property="event">
+       <boolean>true</boolean>
+      </void>
+      <void property="fstSampleTime">
+       <double>1.5930072E12</double>
+      </void>
+      <void property="hdrDate">
+       <double>1.432121226804E12</double>
+      </void>
+      <void property="lnchDesc">
+       <string>Monroe Creek</string>
+      </void>
+      <void property="lnchTime">
+       <double>1.593002549E12</double>
+      </void>
+      <void property="mnfc">
+       <string>Onset Computer Corporation</string>
+      </void>
+      <void property="prodID">
+       <string>HOBO U22-001 Water Temp</string>
+      </void>
+      <void property="samplesN">
+       <array class="int" length="1">
+        <void index="0">
+         <int>1</int>
+        </void>
+       </array>
+      </void>
+      <void property="series">
+       <object class="Graphing.LGSeries" id="LGSeries1">
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mPointType</string>
+         <void method="set">
+          <object idref="LGSeries1"/>
+          <int>3</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mPointsFlag</string>
+         <void method="set">
+          <object idref="LGSeries1"/>
+          <boolean>true</boolean>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mSubEventCode</string>
+         <void method="set">
+          <object idref="LGSeries1"/>
+          <int>-1</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>m_ArrayUnitOptions</string>
+         <void method="set">
+          <object idref="LGSeries1"/>
+          <array class="java.lang.String" length="1">
+           <void index="0">
+            <string></string>
+           </void>
+          </array>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>m_iCurrentUnitIndex</string>
+         <void method="set">
+          <object idref="LGSeries1"/>
+          <int>0</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>dataSetId</string>
+         <void method="set">
+          <object idref="LGSeries1"/>
+          <string>1568485634</string>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mCustomFont</string>
+         <void method="set">
+          <object idref="LGSeries1"/>
+          <boolean>true</boolean>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mPtRadius</string>
+         <void method="set">
+          <object idref="LGSeries1"/>
+          <short>4</short>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mName</string>
+         <void method="set">
+          <object idref="LGSeries1"/>
+          <string>Coupler Detached</string>
+         </void>
+        </void>
+        <void property="MPaintSave">
+         <object idref="Color0"/>
+        </void>
+        <void property="MStrokeSave">
+         <object idref="BasicStroke0"/>
+        </void>
+        <void property="paneColor">
+         <object class="java.awt.Color">
+          <int>64</int>
+          <int>64</int>
+          <int>64</int>
+          <int>255</int>
+         </object>
+        </void>
+       </object>
+      </void>
+      <void property="startLoggingDelay">
+       <double>4651.0</double>
+      </void>
+      <void property="timeZoneID">
+       <string>GMT-05:00</string>
+      </void>
+     </object>
+    </void>
+    <void index="2">
+     <object class="Appleseed.HOBOViewX$HOBOSeriesX">
+      <void property="FWVer">
+       <string>1.06</string>
+      </void>
+      <void property="GMTMinsOrig">
+       <int>-300</int>
+      </void>
+      <void property="GMTMinsRaw">
+       <int>-360</int>
+      </void>
+      <void property="LDesc">
+       <string>Coupler Attached</string>
+      </void>
+      <void property="SDesc">
+       <string>Coupler Attached</string>
+      </void>
+      <void property="SN">
+       <string>10739559</string>
+      </void>
+      <void property="YAxis">
+       <int>3</int>
+      </void>
+      <void property="battLnch">
+       <float>3.43</float>
+      </void>
+      <void property="channelDisplayMode">
+       <object idref="OPlotManager$ChannelDisplayModes0"/>
+      </void>
+      <void property="data">
+       <string>AABRAfxxd0I=</string>
+      </void>
+      <void property="depN">
+       <int>7</int>
+      </void>
+      <void property="devMem">
+       <int>65536</int>
+      </void>
+      <void property="event">
+       <boolean>true</boolean>
+      </void>
+      <void property="fstSampleTime">
+       <double>1.611145418E12</double>
+      </void>
+      <void property="hdrDate">
+       <double>1.432121226804E12</double>
+      </void>
+      <void property="lnchDesc">
+       <string>Monroe Creek</string>
+      </void>
+      <void property="lnchTime">
+       <double>1.593002549E12</double>
+      </void>
+      <void property="mnfc">
+       <string>Onset Computer Corporation</string>
+      </void>
+      <void property="prodID">
+       <string>HOBO U22-001 Water Temp</string>
+      </void>
+      <void property="samplesN">
+       <array class="int" length="1">
+        <void index="0">
+         <int>1</int>
+        </void>
+       </array>
+      </void>
+      <void property="series">
+       <object class="Graphing.LGSeries" id="LGSeries2">
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mPointType</string>
+         <void method="set">
+          <object idref="LGSeries2"/>
+          <int>4</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mPointsFlag</string>
+         <void method="set">
+          <object idref="LGSeries2"/>
+          <boolean>true</boolean>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mEventCode</string>
+         <void method="set">
+          <object idref="LGSeries2"/>
+          <int>1</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mSubEventCode</string>
+         <void method="set">
+          <object idref="LGSeries2"/>
+          <int>-1</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mFullEventCode</string>
+         <void method="set">
+          <object idref="LGSeries2"/>
+          <int>1</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>m_ArrayUnitOptions</string>
+         <void method="set">
+          <object idref="LGSeries2"/>
+          <array class="java.lang.String" length="1">
+           <void index="0">
+            <string></string>
+           </void>
+          </array>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>m_iCurrentUnitIndex</string>
+         <void method="set">
+          <object idref="LGSeries2"/>
+          <int>0</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>dataSetId</string>
+         <void method="set">
+          <object idref="LGSeries2"/>
+          <string>1568485634</string>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mCustomFont</string>
+         <void method="set">
+          <object idref="LGSeries2"/>
+          <boolean>true</boolean>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mPtRadius</string>
+         <void method="set">
+          <object idref="LGSeries2"/>
+          <short>4</short>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mName</string>
+         <void method="set">
+          <object idref="LGSeries2"/>
+          <string>Coupler Attached</string>
+         </void>
+        </void>
+        <void property="MPaintSave">
+         <object idref="Color0"/>
+        </void>
+        <void property="MStrokeSave">
+         <object idref="BasicStroke0"/>
+        </void>
+        <void property="paneColor">
+         <object class="java.awt.Color">
+          <int>64</int>
+          <int>64</int>
+          <int>64</int>
+          <int>255</int>
+         </object>
+        </void>
+       </object>
+      </void>
+      <void property="startLoggingDelay">
+       <double>4651.0</double>
+      </void>
+      <void property="timeZoneID">
+       <string>GMT-05:00</string>
+      </void>
+     </object>
+    </void>
+    <void index="3">
+     <object class="Appleseed.HOBOViewX$HOBOSeriesX">
+      <void property="FWVer">
+       <string>1.06</string>
+      </void>
+      <void property="GMTMinsOrig">
+       <int>-300</int>
+      </void>
+      <void property="GMTMinsRaw">
+       <int>-360</int>
+      </void>
+      <void property="LDesc">
+       <string>Host Connected</string>
+      </void>
+      <void property="SDesc">
+       <string>Host Connected</string>
+      </void>
+      <void property="SN">
+       <string>10739559</string>
+      </void>
+      <void property="YAxis">
+       <int>4</int>
+      </void>
+      <void property="battLnch">
+       <float>3.43</float>
+      </void>
+      <void property="channelDisplayMode">
+       <object idref="OPlotManager$ChannelDisplayModes0"/>
+      </void>
+      <void property="data">
+       <string>AABFA/xxd0I=</string>
+      </void>
+      <void property="depN">
+       <int>7</int>
+      </void>
+      <void property="devMem">
+       <int>65536</int>
+      </void>
+      <void property="event">
+       <boolean>true</boolean>
+      </void>
+      <void property="fstSampleTime">
+       <double>1.611145426E12</double>
+      </void>
+      <void property="hdrDate">
+       <double>1.432121226804E12</double>
+      </void>
+      <void property="lnchDesc">
+       <string>Monroe Creek</string>
+      </void>
+      <void property="lnchTime">
+       <double>1.593002549E12</double>
+      </void>
+      <void property="mnfc">
+       <string>Onset Computer Corporation</string>
+      </void>
+      <void property="prodID">
+       <string>HOBO U22-001 Water Temp</string>
+      </void>
+      <void property="samplesN">
+       <array class="int" length="1">
+        <void index="0">
+         <int>1</int>
+        </void>
+       </array>
+      </void>
+      <void property="series">
+       <object class="Graphing.LGSeries" id="LGSeries3">
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mPointType</string>
+         <void method="set">
+          <object idref="LGSeries3"/>
+          <int>2</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mPointsFlag</string>
+         <void method="set">
+          <object idref="LGSeries3"/>
+          <boolean>true</boolean>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mEventCode</string>
+         <void method="set">
+          <object idref="LGSeries3"/>
+          <int>6</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mSubEventCode</string>
+         <void method="set">
+          <object idref="LGSeries3"/>
+          <int>-1</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mFullEventCode</string>
+         <void method="set">
+          <object idref="LGSeries3"/>
+          <int>6</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>m_ArrayUnitOptions</string>
+         <void method="set">
+          <object idref="LGSeries3"/>
+          <array class="java.lang.String" length="1">
+           <void index="0">
+            <string></string>
+           </void>
+          </array>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>m_iCurrentUnitIndex</string>
+         <void method="set">
+          <object idref="LGSeries3"/>
+          <int>0</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>dataSetId</string>
+         <void method="set">
+          <object idref="LGSeries3"/>
+          <string>1568485634</string>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mCustomFont</string>
+         <void method="set">
+          <object idref="LGSeries3"/>
+          <boolean>true</boolean>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mPtRadius</string>
+         <void method="set">
+          <object idref="LGSeries3"/>
+          <short>4</short>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mName</string>
+         <void method="set">
+          <object idref="LGSeries3"/>
+          <string>Host Connected</string>
+         </void>
+        </void>
+        <void property="MPaintSave">
+         <object idref="Color0"/>
+        </void>
+        <void property="MStrokeSave">
+         <object idref="BasicStroke0"/>
+        </void>
+        <void property="paneColor">
+         <object class="java.awt.Color">
+          <int>64</int>
+          <int>64</int>
+          <int>64</int>
+          <int>255</int>
+         </object>
+        </void>
+       </object>
+      </void>
+      <void property="startLoggingDelay">
+       <double>4651.0</double>
+      </void>
+      <void property="timeZoneID">
+       <string>GMT-05:00</string>
+      </void>
+     </object>
+    </void>
+    <void index="4">
+     <object class="Appleseed.HOBOViewX$HOBOSeriesX">
+      <void property="FWVer">
+       <string>1.06</string>
+      </void>
+      <void property="GMTMinsOrig">
+       <int>-300</int>
+      </void>
+      <void property="GMTMinsRaw">
+       <int>-360</int>
+      </void>
+      <void property="LDesc">
+       <string>Stopped</string>
+      </void>
+      <void property="SDesc">
+       <string>Stopped</string>
+      </void>
+      <void property="SN">
+       <string>10739559</string>
+      </void>
+      <void property="YAxis">
+       <int>5</int>
+      </void>
+      <void property="battLnch">
+       <float>3.43</float>
+      </void>
+      <void property="channelDisplayMode">
+       <object idref="OPlotManager$ChannelDisplayModes0"/>
+      </void>
+      <void property="data">
+       <string>AAAmHfxxd0I=</string>
+      </void>
+      <void property="depN">
+       <int>7</int>
+      </void>
+      <void property="devMem">
+       <int>65536</int>
+      </void>
+      <void property="event">
+       <boolean>true</boolean>
+      </void>
+      <void property="fstSampleTime">
+       <double>1.611145532E12</double>
+      </void>
+      <void property="hdrDate">
+       <double>1.432121226804E12</double>
+      </void>
+      <void property="lnchDesc">
+       <string>Monroe Creek</string>
+      </void>
+      <void property="lnchTime">
+       <double>1.593002549E12</double>
+      </void>
+      <void property="mnfc">
+       <string>Onset Computer Corporation</string>
+      </void>
+      <void property="prodID">
+       <string>HOBO U22-001 Water Temp</string>
+      </void>
+      <void property="samplesN">
+       <array class="int" length="1">
+        <void index="0">
+         <int>1</int>
+        </void>
+       </array>
+      </void>
+      <void property="series">
+       <object class="Graphing.LGSeries" id="LGSeries4">
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mPointType</string>
+         <void method="set">
+          <object idref="LGSeries4"/>
+          <int>7</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mPointsFlag</string>
+         <void method="set">
+          <object idref="LGSeries4"/>
+          <boolean>true</boolean>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mEventCode</string>
+         <void method="set">
+          <object idref="LGSeries4"/>
+          <int>3</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mSubEventCode</string>
+         <void method="set">
+          <object idref="LGSeries4"/>
+          <int>-1</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mFullEventCode</string>
+         <void method="set">
+          <object idref="LGSeries4"/>
+          <int>3</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>m_ArrayUnitOptions</string>
+         <void method="set">
+          <object idref="LGSeries4"/>
+          <array class="java.lang.String" length="1">
+           <void index="0">
+            <string></string>
+           </void>
+          </array>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>m_iCurrentUnitIndex</string>
+         <void method="set">
+          <object idref="LGSeries4"/>
+          <int>0</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>dataSetId</string>
+         <void method="set">
+          <object idref="LGSeries4"/>
+          <string>1568485634</string>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mCustomFont</string>
+         <void method="set">
+          <object idref="LGSeries4"/>
+          <boolean>true</boolean>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mPtRadius</string>
+         <void method="set">
+          <object idref="LGSeries4"/>
+          <short>4</short>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mName</string>
+         <void method="set">
+          <object idref="LGSeries4"/>
+          <string>Stopped</string>
+         </void>
+        </void>
+        <void property="MPaintSave">
+         <object idref="Color0"/>
+        </void>
+        <void property="MStrokeSave">
+         <object idref="BasicStroke0"/>
+        </void>
+        <void property="paneColor">
+         <object class="java.awt.Color">
+          <int>64</int>
+          <int>64</int>
+          <int>64</int>
+          <int>255</int>
+         </object>
+        </void>
+       </object>
+      </void>
+      <void property="startLoggingDelay">
+       <double>4651.0</double>
+      </void>
+      <void property="timeZoneID">
+       <string>GMT-05:00</string>
+      </void>
+     </object>
+    </void>
+    <void index="5">
+     <object class="Appleseed.HOBOViewX$HOBOSeriesX">
+      <void property="FWVer">
+       <string>1.06</string>
+      </void>
+      <void property="GMTMinsOrig">
+       <int>-300</int>
+      </void>
+      <void property="GMTMinsRaw">
+       <int>-360</int>
+      </void>
+      <void property="LDesc">
+       <string>End Of File</string>
+      </void>
+      <void property="SDesc">
+       <string>End Of File</string>
+      </void>
+      <void property="SN">
+       <string>10739559</string>
+      </void>
+      <void property="YAxis">
+       <int>6</int>
+      </void>
+      <void property="battLnch">
+       <float>3.43</float>
+      </void>
+      <void property="channelDisplayMode">
+       <object idref="OPlotManager$ChannelDisplayModes0"/>
+      </void>
+      <void property="data">
+       <string>AAAmHfxxd0I=</string>
+      </void>
+      <void property="depN">
+       <int>7</int>
+      </void>
+      <void property="devMem">
+       <int>65536</int>
+      </void>
+      <void property="event">
+       <boolean>true</boolean>
+      </void>
+      <void property="fstSampleTime">
+       <double>1.611145532E12</double>
+      </void>
+      <void property="hdrDate">
+       <double>1.432121226804E12</double>
+      </void>
+      <void property="lnchDesc">
+       <string>Monroe Creek</string>
+      </void>
+      <void property="lnchTime">
+       <double>1.593002549E12</double>
+      </void>
+      <void property="mnfc">
+       <string>Onset Computer Corporation</string>
+      </void>
+      <void property="prodID">
+       <string>HOBO U22-001 Water Temp</string>
+      </void>
+      <void property="samplesN">
+       <array class="int" length="1">
+        <void index="0">
+         <int>1</int>
+        </void>
+       </array>
+      </void>
+      <void property="series">
+       <object class="Graphing.LGSeries" id="LGSeries5">
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mPointType</string>
+         <void method="set">
+          <object idref="LGSeries5"/>
+          <int>5</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mPointsFlag</string>
+         <void method="set">
+          <object idref="LGSeries5"/>
+          <boolean>true</boolean>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mEventCode</string>
+         <void method="set">
+          <object idref="LGSeries5"/>
+          <int>15</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mSubEventCode</string>
+         <void method="set">
+          <object idref="LGSeries5"/>
+          <int>-1</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>mFullEventCode</string>
+         <void method="set">
+          <object idref="LGSeries5"/>
+          <int>15</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>m_ArrayUnitOptions</string>
+         <void method="set">
+          <object idref="LGSeries5"/>
+          <array class="java.lang.String" length="1">
+           <void index="0">
+            <string></string>
+           </void>
+          </array>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>m_iCurrentUnitIndex</string>
+         <void method="set">
+          <object idref="LGSeries5"/>
+          <int>0</int>
+         </void>
+        </void>
+        <void class="Graphing.LGSeries" method="getField">
+         <string>dataSetId</string>
+         <void method="set">
+          <object idref="LGSeries5"/>
+          <string>1568485634</string>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mCustomFont</string>
+         <void method="set">
+          <object idref="LGSeries5"/>
+          <boolean>true</boolean>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mPtRadius</string>
+         <void method="set">
+          <object idref="LGSeries5"/>
+          <short>4</short>
+         </void>
+        </void>
+        <void class="Graphing.LGPane" method="getField">
+         <string>mName</string>
+         <void method="set">
+          <object idref="LGSeries5"/>
+          <string>End Of File</string>
+         </void>
+        </void>
+        <void property="MPaintSave">
+         <object idref="Color0"/>
+        </void>
+        <void property="MStrokeSave">
+         <object idref="BasicStroke0"/>
+        </void>
+        <void property="paneColor">
+         <object class="java.awt.Color">
+          <int>64</int>
+          <int>64</int>
+          <int>64</int>
+          <int>255</int>
+         </object>
+        </void>
+       </object>
+      </void>
+      <void property="startLoggingDelay">
+       <double>4651.0</double>
+      </void>
+      <void property="timeZoneID">
+       <string>GMT-05:00</string>
+      </void>
+     </object>
+    </void>
+   </array>
+  </void>
+  <void property="title">
+   <object class="Graphing.LGTitle" id="LGTitle0">
+    <void class="Graphing.LGPane" method="getField">
+     <string>mCustomFont</string>
+     <void method="set">
+      <object idref="LGTitle0"/>
+      <boolean>true</boolean>
+     </void>
+    </void>
+    <void class="Graphing.LGPane" method="getField">
+     <string>mName</string>
+     <void method="set">
+      <object idref="LGTitle0"/>
+      <string>Monroe Creek</string>
+     </void>
+    </void>
+    <void property="font">
+     <object class="java.awt.Font">
+      <string>Dialog</string>
+      <int>0</int>
+      <int>12</int>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void property="vendor">
+   <string>Onset Computer Corporation</string>
+  </void>
+  <void property="version">
+   <int>9</int>
+  </void>
+ </object>
+<void class="Graphing.LGSeries" id="Field0" method="getField">
+ <string>SpecialCase</string>
+ <void id="booleanArray0" method="get">
+  <object idref="LGSeries4"/>
+  <void index="2">
+   <boolean>true</boolean>
+  </void>
+ </void>
+</void>
+<void idref="booleanArray0"/>
+<void class="Graphing.LGSeries" id="Field1" method="getField">
+ <string>SpecialCase</string>
+ <void id="booleanArray1" method="get">
+  <object idref="LGSeries5"/>
+  <void index="2">
+   <boolean>true</boolean>
+  </void>
+ </void>
+</void>
+<void idref="booleanArray1"/>
+<void class="Graphing.LGSeries" id="Field2" method="getField">
+ <string>SpecialCase</string>
+ <void id="booleanArray2" method="get">
+  <object idref="LGSeries1"/>
+  <void index="2">
+   <boolean>true</boolean>
+  </void>
+ </void>
+</void>
+<void idref="booleanArray2"/>
+<void class="Graphing.LGSeries" id="Field3" method="getField">
+ <string>SpecialCase</string>
+ <void id="booleanArray3" method="get">
+  <object idref="LGSeries3"/>
+  <void index="2">
+   <boolean>true</boolean>
+  </void>
+ </void>
+</void>
+<void idref="booleanArray3"/>
+<void class="Graphing.LGSeries" id="Field4" method="getField">
+ <string>SpecialCase</string>
+ <void id="booleanArray4" method="get">
+  <object idref="LGSeries2"/>
+  <void index="2">
+   <boolean>true</boolean>
+  </void>
+ </void>
+</void>
+<void idref="booleanArray4"/>
+</java>
