@@ -1,0 +1,3 @@
+TempLoggersFinal/TempLoggerMaster.pdf filter=lfs diff=lfs merge=lfs -text
+Engel_Temploggers_done/MasterData.csv filter=lfs diff=lfs merge=lfs -text
+TempLoggersFinal/old/MasterData.csv filter=lfs diff=lfs merge=lfs -text
